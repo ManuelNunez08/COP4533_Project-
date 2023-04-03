@@ -59,6 +59,7 @@ vector<int> task2(vector<vector<int>>& A) {
     return best_transaction;
 }
 
+
 int main() {
 
 //    int m, n;
@@ -69,10 +70,31 @@ int main() {
 //            cin >> A[i][j];
 //        }
 //    }
-    vector<vector<int>> A = {{6,5,4,1}};
-    vector<int> task2Result = task2(A);
 
-    cout << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+    vector<vector<int>> A(5,vector<int>(5));
+    for(int i=0; i < 10; i++){
+        for(int j=0;j<A.size();j++){
+            for(int k=0; k<A[0].size();k++){
+                A[j][k] = rand() % 10;
+                cout << A[j][k] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+
+        vector<int> task1Result = task1(A);
+
+        cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+
+        vector<int> task2Result = task2(A);
+
+        cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+    }
+//    vector<vector<int>> A = {{2,5,1,3}};
+//    vector<int> task2Result = task2(A);
+//
+//    cout << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+
 
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
