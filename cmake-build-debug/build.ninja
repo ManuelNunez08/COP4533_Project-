@@ -42,6 +42,48 @@ include CMakeFiles/rules.ninja
 cmake_ninja_workdir = /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/cmake-build-debug/
 
 #############################################
+# Utility command for install/local
+
+build CMakeFiles/install/local.util: CUSTOM_COMMAND all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install/local: phony CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build CMakeFiles/install/strip.util: CUSTOM_COMMAND all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build install/strip: phony CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build CMakeFiles/install.util: CUSTOM_COMMAND all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build install: phony CMakeFiles/install.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
+
+
+#############################################
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
@@ -64,6 +106,39 @@ build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
 build edit_cache: phony CMakeFiles/edit_cache.util
 
 # =============================================================================
+# Object build statements for EXECUTABLE target Google_Tests_run
+
+
+#############################################
+# Order-only phony target for Google_Tests_run
+
+build cmake_object_order_depends_target_Google_Tests_run: phony || cmake_object_order_depends_target_gtest cmake_object_order_depends_target_gtest_main
+
+build CMakeFiles/Google_Tests_run.dir/Testing/ProjectTests.cpp.o: CXX_COMPILER__Google_Tests_run_Debug /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/Testing/ProjectTests.cpp || cmake_object_order_depends_target_Google_Tests_run
+  DEP_FILE = CMakeFiles/Google_Tests_run.dir/Testing/ProjectTests.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6 -std=gnu++14
+  INCLUDES = -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest/include" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest"
+  OBJECT_DIR = CMakeFiles/Google_Tests_run.dir
+  OBJECT_FILE_DIR = CMakeFiles/Google_Tests_run.dir/Testing
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target Google_Tests_run
+
+
+#############################################
+# Link the executable Google_Tests_run
+
+build Google_Tests_run: CXX_EXECUTABLE_LINKER__Google_Tests_run_Debug CMakeFiles/Google_Tests_run.dir/Testing/ProjectTests.cpp.o | lib/libgtest.a lib/libgtest_main.a lib/libgtest.a || lib/libgtest.a lib/libgtest_main.a
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  LINK_LIBRARIES = lib/libgtest.a  lib/libgtest_main.a  lib/libgtest.a
+  OBJECT_DIR = CMakeFiles/Google_Tests_run.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = Google_Tests_run
+  TARGET_PDB = Google_Tests_run.dbg
+
+# =============================================================================
 # Object build statements for EXECUTABLE target COP4533_Project
 
 
@@ -75,6 +150,7 @@ build cmake_object_order_depends_target_COP4533_Project: phony || CMakeFiles/COP
 build CMakeFiles/COP4533_Project.dir/main.cpp.o: CXX_COMPILER__COP4533_Project_Debug /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/main.cpp || cmake_object_order_depends_target_COP4533_Project
   DEP_FILE = CMakeFiles/COP4533_Project.dir/main.cpp.o.d
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6 -std=gnu++14
+  INCLUDES = -I"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest/include" -I"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest"
   OBJECT_DIR = CMakeFiles/COP4533_Project.dir
   OBJECT_FILE_DIR = CMakeFiles/COP4533_Project.dir
 
@@ -95,7 +171,435 @@ build COP4533_Project: CXX_EXECUTABLE_LINKER__COP4533_Project_Debug CMakeFiles/C
   TARGET_PDB = COP4533_Project.dbg
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for install/local
+
+build lib/CMakeFiles/install/local.util: CUSTOM_COMMAND lib/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build lib/install/local: phony lib/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build lib/CMakeFiles/install/strip.util: CUSTOM_COMMAND lib/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build lib/install/strip: phony lib/CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build lib/CMakeFiles/install.util: CUSTOM_COMMAND lib/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build lib/install: phony lib/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build lib/list_install_components: phony
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project" -B"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/rebuild_cache: phony lib/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/edit_cache: phony lib/CMakeFiles/edit_cache.util
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for install/local
+
+build lib/googlemock/CMakeFiles/install/local.util: CUSTOM_COMMAND lib/googlemock/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googlemock" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build lib/googlemock/install/local: phony lib/googlemock/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build lib/googlemock/CMakeFiles/install/strip.util: CUSTOM_COMMAND lib/googlemock/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googlemock" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build lib/googlemock/install/strip: phony lib/googlemock/CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build lib/googlemock/CMakeFiles/install.util: CUSTOM_COMMAND lib/googlemock/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googlemock" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build lib/googlemock/install: phony lib/googlemock/CMakeFiles/install.util
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gmock
+
+
+#############################################
+# Order-only phony target for gmock
+
+build cmake_object_order_depends_target_gmock: phony || cmake_object_order_depends_target_gtest
+
+build lib/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o: CXX_COMPILER__gmock_Debug /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/lib/googlemock/src/gmock-all.cc || cmake_object_order_depends_target_gmock
+  DEP_FILE = lib/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6  -DGTEST_HAS_PTHREAD=1   -std=c++14
+  INCLUDES = -I"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googlemock/include" -I"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googlemock" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest/include" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest"
+  OBJECT_DIR = lib/googlemock/CMakeFiles/gmock.dir
+  OBJECT_FILE_DIR = lib/googlemock/CMakeFiles/gmock.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gmock
+
+
+#############################################
+# Link the static library lib/libgmock.a
+
+build lib/libgmock.a: CXX_STATIC_LIBRARY_LINKER__gmock_Debug lib/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o || lib/libgtest.a
+  ARCH_FLAGS = -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = lib/googlemock/CMakeFiles/gmock.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgmock.a
+  TARGET_PDB = gmock.a.dbg
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/googlemock/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googlemock" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project" -B"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/googlemock/rebuild_cache: phony lib/googlemock/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/googlemock/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googlemock" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/googlemock/edit_cache: phony lib/googlemock/CMakeFiles/edit_cache.util
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gmock_main
+
+
+#############################################
+# Order-only phony target for gmock_main
+
+build cmake_object_order_depends_target_gmock_main: phony || cmake_object_order_depends_target_gmock cmake_object_order_depends_target_gtest
+
+build lib/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o: CXX_COMPILER__gmock_main_Debug /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/lib/googlemock/src/gmock_main.cc || cmake_object_order_depends_target_gmock_main
+  DEP_FILE = lib/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6  -DGTEST_HAS_PTHREAD=1   -std=c++14
+  INCLUDES = -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googlemock/include" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googlemock" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest/include" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest"
+  OBJECT_DIR = lib/googlemock/CMakeFiles/gmock_main.dir
+  OBJECT_FILE_DIR = lib/googlemock/CMakeFiles/gmock_main.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gmock_main
+
+
+#############################################
+# Link the static library lib/libgmock_main.a
+
+build lib/libgmock_main.a: CXX_STATIC_LIBRARY_LINKER__gmock_main_Debug lib/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o || lib/libgmock.a lib/libgtest.a
+  ARCH_FLAGS = -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = lib/googlemock/CMakeFiles/gmock_main.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgmock_main.a
+  TARGET_PDB = gmock_main.a.dbg
+
+
+#############################################
+# Utility command for list_install_components
+
+build lib/googlemock/list_install_components: phony
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googlemock/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for install/local
+
+build lib/googletest/CMakeFiles/install/local.util: CUSTOM_COMMAND lib/googletest/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googletest" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build lib/googletest/install/local: phony lib/googletest/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build lib/googletest/list_install_components: phony
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/googletest/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googletest" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project" -B"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/googletest/rebuild_cache: phony lib/googletest/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/googletest/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googletest" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/googletest/edit_cache: phony lib/googletest/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for install/strip
+
+build lib/googletest/CMakeFiles/install/strip.util: CUSTOM_COMMAND lib/googletest/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googletest" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build lib/googletest/install/strip: phony lib/googletest/CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build lib/googletest/CMakeFiles/install.util: CUSTOM_COMMAND lib/googletest/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googletest" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build lib/googletest/install: phony lib/googletest/CMakeFiles/install.util
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gtest_main
+
+
+#############################################
+# Order-only phony target for gtest_main
+
+build cmake_object_order_depends_target_gtest_main: phony || cmake_object_order_depends_target_gtest
+
+build lib/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o: CXX_COMPILER__gtest_main_Debug /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/lib/googletest/src/gtest_main.cc || cmake_object_order_depends_target_gtest_main
+  DEP_FILE = lib/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6  -DGTEST_HAS_PTHREAD=1   -std=c++14
+  INCLUDES = -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest/include" -isystem "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest"
+  OBJECT_DIR = lib/googletest/CMakeFiles/gtest_main.dir
+  OBJECT_FILE_DIR = lib/googletest/CMakeFiles/gtest_main.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gtest_main
+
+
+#############################################
+# Link the static library lib/libgtest_main.a
+
+build lib/libgtest_main.a: CXX_STATIC_LIBRARY_LINKER__gtest_main_Debug lib/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o || lib/libgtest.a
+  ARCH_FLAGS = -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = lib/googletest/CMakeFiles/gtest_main.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgtest_main.a
+  TARGET_PDB = gtest_main.a.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gtest
+
+
+#############################################
+# Order-only phony target for gtest
+
+build cmake_object_order_depends_target_gtest: phony || lib/googletest/CMakeFiles/gtest.dir
+
+build lib/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o: CXX_COMPILER__gtest_Debug /Users/manuelnunezmartinez/Documents/UF/Spring$ 23'/Algos/COP4533_Project/lib/googletest/src/gtest-all.cc || cmake_object_order_depends_target_gtest
+  DEP_FILE = lib/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6  -DGTEST_HAS_PTHREAD=1   -std=c++14
+  INCLUDES = -I"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest/include" -I"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/lib/googletest"
+  OBJECT_DIR = lib/googletest/CMakeFiles/gtest.dir
+  OBJECT_FILE_DIR = lib/googletest/CMakeFiles/gtest.dir/src
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gtest
+
+
+#############################################
+# Link the static library lib/libgtest.a
+
+build lib/libgtest.a: CXX_STATIC_LIBRARY_LINKER__gtest_Debug lib/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+  ARCH_FLAGS = -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -mmacosx-version-min=11.6
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = lib/googletest/CMakeFiles/gtest.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = lib/libgtest.a
+  TARGET_PDB = gtest.a.dbg
+
+# =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for install/local
+
+build Testing/CMakeFiles/install/local.util: CUSTOM_COMMAND Testing/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/Testing" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build Testing/install/local: phony Testing/CMakeFiles/install/local.util
+
+
+#############################################
+# Utility command for install/strip
+
+build Testing/CMakeFiles/install/strip.util: CUSTOM_COMMAND Testing/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/Testing" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+  DESC = Installing the project stripped...
+  pool = console
+  restat = 1
+
+build Testing/install/strip: phony Testing/CMakeFiles/install/strip.util
+
+
+#############################################
+# Utility command for install
+
+build Testing/CMakeFiles/install.util: CUSTOM_COMMAND Testing/all
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/Testing" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -P cmake_install.cmake
+  DESC = Install the project...
+  pool = console
+  restat = 1
+
+build Testing/install: phony Testing/CMakeFiles/install.util
+
+
+#############################################
+# Utility command for list_install_components
+
+build Testing/list_install_components: phony
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build Testing/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/Testing" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake --regenerate-during-build -S"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project" -B"/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug"
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build Testing/rebuild_cache: phony Testing/CMakeFiles/rebuild_cache.util
+
+
+#############################################
+# Utility command for edit_cache
+
+build Testing/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd "/Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/Testing" && /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build Testing/edit_cache: phony Testing/CMakeFiles/edit_cache.util
+
+# =============================================================================
 # Target aliases.
+
+build gmock: phony lib/libgmock.a
+
+build gmock_main: phony lib/libgmock_main.a
+
+build gtest: phony lib/libgtest.a
+
+build gtest_main: phony lib/libgtest_main.a
+
+build libgmock.a: phony lib/libgmock.a
+
+build libgmock_main.a: phony lib/libgmock_main.a
+
+build libgtest.a: phony lib/libgtest.a
+
+build libgtest_main.a: phony lib/libgtest_main.a
 
 # =============================================================================
 # Folder targets.
@@ -105,7 +609,35 @@ build COP4533_Project: CXX_EXECUTABLE_LINKER__COP4533_Project_Debug CMakeFiles/C
 #############################################
 # Folder: /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug
 
-build all: phony COP4533_Project
+build all: phony Google_Tests_run COP4533_Project lib/all Testing/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/Testing
+
+build Testing/all: phony
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib
+
+build lib/all: phony lib/googlemock/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googlemock
+
+build lib/googlemock/all: phony lib/libgmock.a lib/libgmock_main.a lib/googletest/all
+
+# =============================================================================
+
+#############################################
+# Folder: /Users/manuelnunezmartinez/Documents/UF/Spring 23'/Algos/COP4533_Project/cmake-build-debug/lib/googletest
+
+build lib/googletest/all: phony lib/libgtest_main.a lib/libgtest.a
 
 # =============================================================================
 # Built-in targets
@@ -114,14 +646,14 @@ build all: phony COP4533_Project
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | ../CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt ../Testing/CMakeLists.txt ../lib/CMakeLists.txt ../lib/googlemock/CMakeLists.txt ../lib/googlemock/cmake/gmock.pc.in ../lib/googlemock/cmake/gmock_main.pc.in ../lib/googletest/CMakeLists.txt ../lib/googletest/cmake/Config.cmake.in ../lib/googletest/cmake/gtest.pc.in ../lib/googletest/cmake/gtest_main.pc.in ../lib/googletest/cmake/internal_utils.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeDependentOption.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakePackageConfigHelpers.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckCSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckIncludeFile.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckLibraryExists.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPython.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPython/Support.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindThreads.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/GNUInstallDirs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Internal/CheckSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/WriteBasicConfigVersionFile.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ../CMakeLists.txt /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake: phony
+build ../CMakeLists.txt ../Testing/CMakeLists.txt ../lib/CMakeLists.txt ../lib/googlemock/CMakeLists.txt ../lib/googlemock/cmake/gmock.pc.in ../lib/googlemock/cmake/gmock_main.pc.in ../lib/googletest/CMakeLists.txt ../lib/googletest/cmake/Config.cmake.in ../lib/googletest/cmake/gtest.pc.in ../lib/googletest/cmake/gtest_main.pc.in ../lib/googletest/cmake/internal_utils.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/BasicConfigVersion-AnyNewerVersion.cmake.in /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCXXInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeDependentOption.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeGenericSystem.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakePackageConfigHelpers.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckCSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckIncludeFile.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/CheckLibraryExists.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Compiler/GNU.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageHandleStandardArgs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPackageMessage.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPython.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindPython/Support.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/FindThreads.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/GNUInstallDirs.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Internal/CheckSourceCompiles.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-AppleClang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-C.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang-CXX.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Apple-Clang.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin-Initialize.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/Darwin.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/Platform/UnixPaths.cmake /Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.21/Modules/WriteBasicConfigVersionFile.cmake CMakeCache.txt CMakeFiles/3.21.1/CMakeCCompiler.cmake CMakeFiles/3.21.1/CMakeCXXCompiler.cmake CMakeFiles/3.21.1/CMakeSystem.cmake: phony
 
 
 #############################################
