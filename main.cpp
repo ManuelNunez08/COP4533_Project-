@@ -35,25 +35,21 @@ vector<int> task2(vector<vector<int>>& A) {
     vector<int> best_transaction(3);
 
     for (int i = 0; i < m; i++) { // Iterating through each stock
-        // Keeping track of the minimum and maximum price of each stock
+        // Keeping track of the minimum of each stock
         int minPrice = A[i][0];
-        int maxPrice = A[i][0];
         int minDay = 0;
 
-        for (int j = 1; j < n; j++) {  // Iterating through each day of each stock
+        for (int j = 1; j < n; j++) { // Iterating through each day of each stock
             if (A[i][j] < minPrice) { // Checking for a new buy day
                 minPrice = A[i][j];
                 minDay = j;
-            } else if (A[i][j] > maxPrice) {  // Checking for a new sell day
-                maxPrice = A[i][j];
-                if (j > minDay) { // Checking to see if the sell day is after the buy day
-                    int profit = maxPrice - minPrice;
-                    if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
-                        maxProfit = profit;
-                        stockIndex = i;
-                        buyDay = minDay;
-                        sellDay = j;
-                    }
+            } else  {
+                int profit = A[i][j] - minPrice;
+                if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
+                    maxProfit = profit;
+                    stockIndex = i;
+                    buyDay = minDay;
+                    sellDay = j;
                 }
             }
         }
@@ -66,14 +62,15 @@ vector<int> task2(vector<vector<int>>& A) {
 
 int main() {
 
-    int m, n;
-    cin >> m >> n;
-    vector<vector<int>> A(m, vector<int>(n));
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> A[i][j];
-        }
-    }
+//    int m, n;
+//    cin >> m >> n;
+//    vector<vector<int>> A(m, vector<int>(n));
+//    for (int i = 0; i < m; i++) {
+//        for (int j = 0; j < n; j++) {
+//            cin >> A[i][j];
+//        }
+//    }
+    vector<vector<int>> A = {{1,5,1,4}};
     vector<int> task1Result = task1(A);
 
     cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
