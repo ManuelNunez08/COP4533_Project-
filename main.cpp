@@ -7,8 +7,8 @@ using namespace std;
 vector<int> task1(vector<vector<int>>& A) {
     int m = A.size();
     int n = A[0].size();
-    int max_profit = 0;
-    vector<int> best_transaction(3, -1); // Initialize to -1 in case no valid transaction is found
+    int max_profit = INT_MIN;  // Set to negative infinity to always return a transaction, even if the profit is negative
+    vector<int> best_transaction(3, -1);
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
             for (int k = j + 1; k < n; k++) {
@@ -36,12 +36,8 @@ int main() {
         }
     }
     vector<int> task1Result = task1(A);
-    
-    if (task1Result[0] == -1) {
-        cout << "No valid transaction found." << endl;
-    } else {
-        cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
-    }
+
+    cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
 
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
