@@ -24,8 +24,41 @@ vector<int> task1(vector<vector<int>>& A) {
     }
     return best_transaction;
 }
-
 vector<int> task2(vector<vector<int>>& A) {
+    int m = A.size();
+    int n = A[0].size();
+    int maxProfit = INT_MIN;
+    int stockIndex = 0;
+    int buyDay = 0;
+    int sellDay = 0;
+    vector<int> best_transaction(3);
+
+    for (int i = 0; i < m; i++) { // Iterating through each stock
+        // Keeping track of the minimum of each stock
+        int minPrice = A[i][0];
+        int minDay = 0;
+
+        for (int j = 1; j < n; j++) { // Iterating through each day of each stock
+            int profit = A[i][j] - minPrice;
+            if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
+                maxProfit = profit;
+                stockIndex = i;
+                buyDay = minDay;
+                sellDay = j;
+            }
+            if (A[i][j] < minPrice) { // Checking for a new buy day
+                minPrice = A[i][j];
+                minDay = j;
+            }
+        }
+    }
+    best_transaction[0] = stockIndex;
+    best_transaction[1] = buyDay;
+    best_transaction[2] = sellDay;
+    return best_transaction;
+}
+
+vector<int> task2b(vector<vector<int>>& A) {
     //PREPROCESSING
     /*Create a secondary 2 dimensional array where each entry stores the max value to the right of it. The array can be
      * built in O(n^2) time by starting on the last index of each subarray and considering for each element either the
@@ -107,6 +140,14 @@ int main() {
         vector<int> task2Result = task2(A);
 
         cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+
+        vector<int> task2bResult = task2b(A);
+
+        cout << "Task 2b Result: " << task2bResult[0] << " " << task2bResult[1] << " " << task2bResult[2] << endl;
+        cout << endl;
+
+
+    }
 
 
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
