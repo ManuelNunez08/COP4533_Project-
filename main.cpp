@@ -58,7 +58,22 @@ vector<int> task2(vector<vector<int>>& A) {
     return best_transaction;
 }
 
-vector<int> task2b(vector<vector<int>>& A) {
+
+vector<int> task3A(vector<vector<int> >& A, vector<vector<int> >& B) {
+    //PREPROCESSING
+    /* The idea is to build the table I built in task 2b using recursion I believe and to take decisions at the same time
+     * while we built it
+     *
+     * starting from the right, for every company find OPT(b, s) = max{ (A[i][j]- min(A[i][j] for 0<j<A[0].size()), ( )
+     *
+     * */
+    int m = A.size();
+    int n = A[0].size();
+}
+
+
+
+vector<int> task3B(vector<vector<int> >& A) {
     //PREPROCESSING
     /*Create a secondary 2 dimensional array where each entry stores the max value to the right of it. The array can be
      * built in O(n^2) time by starting on the last index of each subarray and considering for each element either the
@@ -66,7 +81,7 @@ vector<int> task2b(vector<vector<int>>& A) {
     int m = A.size();
     int n = A[0].size();
 
-    vector<vector<int>> B(m, vector<int>(n));
+    vector<vector<int> > B(m, vector<int>(n));
     for (int i = 0; i < m; i++) {
         for (int j = n-1; j >= 0 ; j--) {
             if(j == n - 1){
@@ -81,6 +96,7 @@ vector<int> task2b(vector<vector<int>>& A) {
         }
     }
 
+
     // IMPLEMENTATION
     int stockIndex = 0;
     int buyDay = 0;
@@ -92,7 +108,7 @@ vector<int> task2b(vector<vector<int>>& A) {
         // Keeping track of the minimum and maximum price of each stock
         int soldAt = -1;
 
-        for (int j = 1; j < n; j++) {
+        for (int j = 0; j < n; j++) {
             //identify date sold at
             if (A[i][j] == soldAt){
                 sellDay = j;
@@ -119,6 +135,10 @@ vector<int> task2b(vector<vector<int>>& A) {
     return best_transaction;
 
 }
+
+
+
+
 
 int main() {
 
