@@ -36,7 +36,12 @@ int main() {
         }
     }
     vector<int> task1Result = task1(A);
-    cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+    
+    if (task1Result[0] == -1) {
+        cout << "No valid transaction found." << endl;
+    } else {
+        cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+    }
 
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
