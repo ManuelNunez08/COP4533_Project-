@@ -46,6 +46,24 @@ int main() {
 
     cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
     /* we are essentially finding the greatest percentage change in our initial investment of an arbitrary amount A.
