@@ -90,9 +90,6 @@ vector<int> task2(vector<vector<int>>& A) {
 
 
 
-
-
-
 int main() {
 
     int m, n;
