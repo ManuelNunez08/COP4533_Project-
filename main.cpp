@@ -1,7 +1,43 @@
 #include <iostream>
+#include <vector>
+
+using namespace std;
+
+
+vector<int> task1(vector<vector<int>>& A) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    vector<int> best_transaction(3, -1); // Initialize to -1 in case no valid transaction is found
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = j + 1; k < n; k++) {
+                int profit = A[i][k] - A[i][j];
+                if (profit > max_profit) {
+                    max_profit = profit;
+                    best_transaction[0] = i;
+                    best_transaction[1] = j;
+                    best_transaction[2] = k;
+                }
+            }
+        }
+    }
+    return best_transaction;
+}
 
 int main() {
-    //std::cout << "Hello, World!" << std::endl;
+
+    int m, n;
+    cin >> m >> n;
+    vector<vector<int>> A(m, vector<int>(n));
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> A[i][j];
+        }
+    }
+    vector<int> task1Result = task1(A);
+    cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
     /* we are essentially finding the greatest percentage change in our initial investment of an arbitrary amount A.
@@ -25,7 +61,7 @@ int main() {
         derivative array has a value smaller than 1. We are indifferent on day's where the stock price equals 1.
 
     2. With a set of companies, a set of corresponding stock prices, and no limits on transactions, we can also create a
-     derivative array. For the 2d-array shown above we have {{1,1,1}, {3,2.5,3}, {2/3,0.6,4/9}}. We cxan then maximize profit
+     derivative array. For the 2d-array shown above we have {{1,1,1}, {3,2.5,3}, {2/3,0.6,4/9}}. We can then maximize profit
      by buying stock for a company m on day n if they have the greatest n+1 derivative array value assuming a value greater than 1 exists.
      If no value greater than 1 exists we would buy nothing on day n.
 
