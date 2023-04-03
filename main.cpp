@@ -25,44 +25,67 @@ vector<int> task1(vector<vector<int>>& A) {
     return best_transaction;
 }
 
-//vector<int> task2(vector<vector<int>>& A) {
-//    int m = A.size();
-//    int n = A[0].size();
-//    int maxProfit = INT_MIN;
-//    int stockIndex = 0;
-//    int buyDay = 0;
-//    int sellDay = 0;
-//    vector<int> best_transaction(3);
-//
-//    for (int i = 0; i < m; i++) { // Iterating through each stock
-//        // Keeping track of the minimum and maximum price of each stock
-//        int minPrice = A[i][0];
-//        int maxPrice = A[i][0];
-//        int minDay = 0;
-//
-//        for (int j = 1; j < n; j++) {  // Iterating through each day of each stock
-//            if (A[i][j] < minPrice) { // Checking for a new buy day
-//                minPrice = A[i][j];
-//                minDay = j;
-//            } else if (A[i][j] > maxPrice) {  // Checking for a new sell day
-//                maxPrice = A[i][j];
-//                if (j > minDay) { // Checking to see if the sell day is after the buy day
-//                    int profit = maxPrice - minPrice;
-//                    if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
-//                        maxProfit = profit;
-//                        stockIndex = i;
-//                        buyDay = minDay;
-//                        sellDay = j;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    best_transaction[0] = stockIndex;
-//    best_transaction[1] = buyDay;
-//    best_transaction[2] = sellDay;
-//    return best_transaction;
-//}
+vector<int> task2(vector<vector<int>>& A) {
+    //PREPROCESSING
+    /*Create a secondary 2 dimensional array where each entry stores the max value to the right of it. The array can be
+     * built in O(n^2) time by starting on the last index of each subarray and considering for each element either the
+     * element to its right or the element that its right element found the largest to the right. */
+    int m = A.size();
+    int n = A[0].size();
+
+    vector<vector<int>> B(m, vector<int>(n));
+    for (int i = 0; i < m; i++) {
+        for (int j = n-1; j >= 0 ; j--) {
+            if(j == n - 1){
+                B[i][j] = -1;
+            }
+            else if ( A[i][j+1] > B[i][j+1] ) {
+                B[i][j] = A[i][j + 1];
+            }
+            else {
+                B[i][j] = B[i][j + 1];
+            }
+        }
+    }
+
+    // IMPLEMENTATION
+    int stockIndex = 0;
+    int buyDay = 0;
+    int sellDay = 0;
+    int maxProfit = INT_MIN;
+    vector<int> best_transaction(3);
+
+    for (int i = 0; i < m; i++) { // Iterating through each stock
+        // Keeping track of the minimum and maximum price of each stock
+        int soldAt = -1;
+
+        for (int j = 1; j < n; j++) {
+            //identify date sold at
+            if (A[i][j] == soldAt){
+                sellDay = j;
+            }
+            // consider buying in every day except the last
+            if (j < n-1) {
+                // Iterating through each day of each stock
+                int profit = B[i][j] - A[i][j];
+                if (profit > maxProfit) {
+                    maxProfit = profit;
+                    stockIndex = i;
+                    buyDay = j;
+                    soldAt = B[i][j];
+                    //sell day has to be found by comparing all entries to the
+                }
+            }
+        }
+    }
+
+    best_transaction[0] = stockIndex;
+    best_transaction[1] = buyDay;
+    best_transaction[2] = sellDay;
+
+    return best_transaction;
+
+}
 
 
 
