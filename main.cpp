@@ -40,17 +40,16 @@ vector<int> task2(vector<vector<int>>& A) {
         int minDay = 0;
 
         for (int j = 1; j < n; j++) { // Iterating through each day of each stock
+            int profit = A[i][j] - minPrice;
+            if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
+                maxProfit = profit;
+                stockIndex = i;
+                buyDay = minDay;
+                sellDay = j;
+            }
             if (A[i][j] < minPrice) { // Checking for a new buy day
                 minPrice = A[i][j];
                 minDay = j;
-            } else  {
-                int profit = A[i][j] - minPrice;
-                if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
-                    maxProfit = profit;
-                    stockIndex = i;
-                    buyDay = minDay;
-                    sellDay = j;
-                }
             }
         }
     }
@@ -70,10 +69,10 @@ int main() {
 //            cin >> A[i][j];
 //        }
 //    }
-    vector<vector<int>> A = {{1,5,1,4}};
-    vector<int> task1Result = task1(A);
+    vector<vector<int>> A = {{6,5,4,1}};
+    vector<int> task2Result = task2(A);
 
-    cout << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+    cout << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
 
     int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
