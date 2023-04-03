@@ -25,6 +25,13 @@ vector<int> task1(vector<vector<int>>& A) {
     return best_transaction;
 }
 
+
+
+
+
+
+
+
 int main() {
 
     int m, n;
