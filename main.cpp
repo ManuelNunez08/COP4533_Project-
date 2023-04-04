@@ -2,8 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
-
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 
 /*This brute force algorithm find the most profitable transaction possible for m companies and their respective stock
@@ -201,7 +202,7 @@ vector<int> task3A(vector<vector<int> >& A) {
  * This is done through preprocessing . The algorithm has a complexity of O(m*n)*/
 vector<int> task3B(vector<vector<int> >& A) {
     //PREPROCESSING
-    /*Create a secondary 2 dimensional array where each entry stores the max value to the right of it. The array can be
+    /* Create a secondary 2 dimensional array where each entry stores the max value to the right of it. The array can be
      * built in O(n^2) time by starting on the last index of each subarray and considering for each element either the
      * element to its right or the element that its right element found the largest to its right. */
     int m = A.size();
@@ -294,6 +295,116 @@ vector<int> task3B(vector<vector<int> >& A) {
 //
 //}
 
+void Plot1() {
+
+    vector<int> days = {1000, 2000, 3000, 4000, 5000};
+    vector<int> companies = {1000, 2000, 3000, 4000, 5000};
+
+    //PLOT 1: variable days (n) and fixed companies(m = 2000)
+    vector<vector<int>> Plot1 (days.size(), vector<int>(4));
+    for (int i = 0; i < days.size(); i++ ){
+        int numDays = days[i];
+        vector<vector<int>> A(2000, vector<int>(numDays));
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10000;
+            }
+        }
+
+        //Task 1
+        auto startTask1 = high_resolution_clock::now();
+        task1(A);
+        auto stopTask1 = high_resolution_clock::now();
+        auto durationTask1 = duration_cast<microseconds>(stopTask1 - startTask1);
+        Plot1[i][0] = durationTask1.count();
+
+        //Task 2
+        auto startTask2 = high_resolution_clock::now();
+        task2(A);
+        auto stopTask2 = high_resolution_clock::now();
+        auto durationTask2 = duration_cast<microseconds>(stopTask2 - startTask2);
+        Plot1[i][1] = durationTask2.count();
+
+        //Task 3A
+        auto startTask3A = high_resolution_clock::now();
+        task3A(A);
+        auto stopTask3A = high_resolution_clock::now();
+        auto durationTask3A = duration_cast<microseconds>(stopTask3A - startTask3A);
+        Plot1[i][2] = durationTask3A.count();
+
+        //Task 3B
+        auto startTask3B = high_resolution_clock::now();
+        task3B(A);
+        auto stopTask3B = high_resolution_clock::now();
+        auto durationTask3B = duration_cast<microseconds>(stopTask3B - startTask3B);
+        Plot1[i][3] = durationTask3B.count();
+
+    }
+
+    for (int j = 0; j < Plot1.size(); j++) {
+        for (int k = 0; k <Plot1[0].size(); k++) {
+            cout << Plot1[j][k] << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+void Plot2() {
+
+    vector<int> days = {1000, 2000, 3000, 4000, 5000};
+    vector<int> companies = {1000, 2000, 3000, 4000, 5000};
+
+    //PLOT 2: fixed days (n = 2000) and variable companies
+    vector<vector<int>> Plot2 (companies.size(), vector<int>(4));
+    for (int i = 0; i < companies.size(); i++ ){
+        int numCompanies = companies[i];
+        vector<vector<int>> A(numCompanies, vector<int>(2000));
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10000;
+            }
+        }
+
+        //Task 1
+        auto startTask1 = high_resolution_clock::now();
+        task1(A);
+        auto stopTask1 = high_resolution_clock::now();
+        auto durationTask1 = duration_cast<microseconds>(stopTask1 - startTask1);
+        Plot2[i][0] = durationTask1.count();
+
+        //Task 2
+        auto startTask2 = high_resolution_clock::now();
+        task2(A);
+        auto stopTask2 = high_resolution_clock::now();
+        auto durationTask2 = duration_cast<microseconds>(stopTask2 - startTask2);
+        Plot2[i][1] = durationTask2.count();
+
+        //Task 3A
+        auto startTask3A = high_resolution_clock::now();
+        task3A(A);
+        auto stopTask3A = high_resolution_clock::now();
+        auto durationTask3A = duration_cast<microseconds>(stopTask3A - startTask3A);
+        Plot2[i][2] = durationTask3A.count();
+
+        //Task 3B
+        auto startTask3B = high_resolution_clock::now();
+        task3B(A);
+        auto stopTask3B = high_resolution_clock::now();
+        auto durationTask3B = duration_cast<microseconds>(stopTask3B - startTask3B);
+        Plot2[i][3] = durationTask3B.count();
+
+    }
+
+    for (int j = 0; j < Plot2.size(); j++) {
+        for (int k = 0; k <Plot2[0].size(); k++) {
+            cout << Plot2[j][k] << " ";
+        }
+        cout << endl;
+    }
+
+}
+
 
 bool Equal(vector<int>& A, vector<int>& B){
     if (A.size() != B.size()){
@@ -310,45 +421,64 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 
 int main() {
+    Plot1();
+    Plot2();
 
-    vector<vector<int>> A(5, vector<int>(5));
-    for (int i = 0; i < 1000; i++) {
-        for (int j = 0; j < A.size(); j++) {
-            for (int k = 0; k < A[0].size(); k++) {
-                A[j][k] = rand() % 1000;
-            }
-        }
-        vector<int> task1Result = task1(A);
-        vector<int> task2Result = task2(A);
-        vector<int> task3aResult = task3A(A);
-        vector<int> task3bResult = task3B(A);
-        if (!Equal(task1Result, task2Result) || !Equal(task1Result, task3aResult) ){
-            for (int x = 0; x < A.size(); x++) {
-                for (int y = 0; y < A[0].size(); y++) {
-                    cout << A[x][y] << " ";
-                }
-                cout << endl;
-            }
-            cout << endl;
 
-            cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
 
-            cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
-
-            cout << "Task 3a Result: " << task3aResult[0] << " " << task3aResult[1] << " " << task3aResult[2] << endl;
-
-            cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
-
-            cout << endl;
-        }
-        else {
-            cout << "Passed Test #" << i << endl;
-        }
+    return 0;
+}
 
 
 
 
-    }
+
+
+
+
+
+
+
+
+
+//    vector<vector<int>> A(4, vector<int>(5));
+//    for (int i = 0; i < 1000; i++) {
+//        for (int j = 0; j < A.size(); j++) {
+//            for (int k = 0; k < A[0].size(); k++) {
+//                A[j][k] = rand() % 1000;
+//            }
+//        }
+//        vector<int> task1Result = task1(A);
+//        vector<int> task2Result = task2(A);
+//        vector<int> task3aResult = task3A(A);
+//        vector<int> task3bResult = task3B(A);
+//        if (!Equal(task1Result, task2Result) || !Equal(task1Result, task3aResult) ){
+//            for (int x = 0; x < A.size(); x++) {
+//                for (int y = 0; y < A[0].size(); y++) {
+//                    cout << A[x][y] << " ";
+//                }
+//                cout << endl;
+//            }
+//            cout << endl;
+//
+//            cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+//
+//            cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+//
+//            cout << "Task 3a Result: " << task3aResult[0] << " " << task3aResult[1] << " " << task3aResult[2] << endl;
+//
+//            cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
+//
+//            cout << endl;
+//        }
+//        else {
+//            cout << "Passed Test #" << i << endl;
+//        }
+//
+//
+//
+//
+//    }
 
 
 
@@ -377,10 +507,3 @@ int main() {
 //
 //    cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
 //    cout << endl;
-
-
-
-
-
-    return 0;
-}
