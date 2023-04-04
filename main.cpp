@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -59,16 +60,56 @@ vector<int> task2(vector<vector<int>>& A) {
 }
 
 
-vector<int> task3A(vector<vector<int> >& A, vector<vector<int> >& B) {
-    //PREPROCESSING
-    /* The idea is to build the table I built in task 2b using recursion I believe and to take decisions at the same time
-     * while we built it
-     *
-     * starting from the right, for every company find OPT(b, s) = max{ (A[i][j]- min(A[i][j] for 0<j<A[0].size()), ( )
-     *
-     * */
+int findMin( vector<int>& A, vector<int>& B, int i) {
+    if (i == 0){
+        B[0] = A[0];
+        return A[0];
+    }
+    else {
+        if (B[i] == -1){
+            B[i] = min(A[i], findMin(A, B, i - 1));
+        }
+        return B[i];
+    }
+
+
+}
+
+int findMax( vector<int>& A, vector<int>& B, int i, int &x, int &y) {
+    if (i == 0){
+        return INT_MIN;
+    }
+    else {
+        return max((A[i] - findMin(A, B, i - 1)), findMax(A, B, i - 1, x, y));
+    }
+}
+
+vector<int> task3A(vector<vector<int> >& A) {
+     /*
+     * starting from the right, for every company find
+     *     OPT(b, s) = max{ (A[i][j]- min(A[i][j] for 0<j<A[0].size()), (OPT(b, s-1) ))
+     */
     int m = A.size();
-    int n = A[0].size();
+    int stockIndex = 0;
+    int buyDay = 0;
+    int sellDay = 0;
+    vector<int> best_transaction(3);
+    int maxProfit = INT_MIN;
+
+    //temporary buy and sell days
+    int x  = 0;
+    int y  = 0;
+    for (int i = 0; i < m; i++){
+        vector<int> Empty (A[0].size(),-1);
+        int profit = findMax(A[i], Empty, A[0].size() - 1, &x, &y);
+
+        if (profit > maxProfit){
+            best_transaction[0] = i;
+            maxProfit = profit;
+        }
+    }
+
+    return best_transaction;
 }
 
 
@@ -161,10 +202,21 @@ int main() {
 
         cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
 
-        vector<int> task2bResult = task2b(A);
+        vector<int> task3aResult = task3A(A);
 
-        cout << "Task 2b Result: " << task2bResult[0] << " " << task2bResult[1] << " " << task2bResult[2] << endl;
+        cout << "Task 3b Result: ";
+        for (i = 0; i < task3aResult.size(); i ++){
+            cout << task3aResult[i] << " ";
+        }
+
+        vector<int> task3bResult = task3B(A);
+
         cout << endl;
+
+        cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
+        cout << endl;
+
+
 
 
     }
