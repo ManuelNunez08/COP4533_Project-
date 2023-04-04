@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
@@ -60,42 +61,55 @@ vector<int> task2(vector<vector<int>>& A) {
 }
 
 
-int findMin( vector<int>& A, vector<int>& B, int i, int &buy, int &sell) {
-    if (i == 0){
-        B[0] = A[0];
-        return A[0];
+int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta, int &buy, int &sell) {
+
+    if (B[i].first == -1){
+
+        if (i == 0) {
+            B[i].first = INT_MAX;
+            B[i].second = -1;
+            delta = 1;
+            return A[i];
+        }
+
+        int other = findMin(A, B, i - 1, delta, buy, sell);
+        int current  = A[i - 1];
+
+
+        if (current < other){
+            delta = 1;
+            B[i].first = current;
+            B[i].second = delta;
+            delta++;
+            return current;
+        }
+        else{
+            B[i].first = other;
+            B[i].second = delta;
+            delta ++;
+            return other;
+        }
+
     }
     else {
-        if (B[i] == -1){
-            int other = findMin(A, B, i - 1, buy, sell);
-            int current  = A[i];
-            if (current < other){
-                buy = i;
-                B[i] = current;
-            }
-            else {
-                B[i] = other;
-            }
-            //B[i] = min(A[i], findMin(A, B, i - 1, buy, sell));
-        }
-        else {
-            return B[i];
-        }
+        return B[i].first;
     }
-
-
 }
 
-int findMax( vector<int>& A, vector<int>& B, int i, int &buy, int &sell) {
+
+
+int findMax( vector<int>& A,  vector<pair <int, int>>& B, int i,int &delta, int &buy, int &sell) {
     if (i == 0){
         return INT_MIN;
     }
     else {
-        int other = findMax(A, B, i - 1, buy, sell);
-        int current = A[i] - findMin(A, B, i - 1, buy, sell);
+        int current = A[i] - findMin(A, B, i , delta, buy, sell);
+        int other = findMax(A, B, i - 1, delta, buy, sell);
 
-        if (current > other){
+        if (current > other && B[i].second != 0){
             sell = i;
+            buy = i - B[i].second;
+
             return current;
         }
         else {
@@ -105,26 +119,27 @@ int findMax( vector<int>& A, vector<int>& B, int i, int &buy, int &sell) {
 }
 
 vector<int> task3A(vector<vector<int> >& A) {
-     /*
-     * starting from the right, for every company find
-     *     OPT(b, s) = max{ (A[i][j]- min(A[i][j] for 0<j<A[0].size()), (OPT(b, s-1) ))
-     */
+    /*
+    * starting from the right, for every company find
+    *     OPT(b, s) = max{ (A[i][j]- min(A[i][j] for 0<j<A[0].size()), (OPT(b, s-1) ))
+     *
+    */
+
     int m = A.size();
-    int stockIndex = 0;
-    int buyDay = 0;
-    int sellDay = 0;
     vector<int> best_transaction(3);
     int maxProfit = INT_MIN;
-
     //temporary buy and sell days
     int buy  = 0;
     int sell  = 0;
+    //variable to keep track of the distance of an index from its minimum.
+    int delta = 0;
     for (int i = 0; i < m; i++){
-        vector<int> Empty (A[0].size(),-1);
-        int profit = findMax(A[i], Empty, A[0].size() - 1, buy, sell);
-
+        delta = 0;
+        vector<pair <int, int>>Empty (A[0].size(), {-1,0});
+        int profit = findMax(A[i], Empty, A[0].size() - 1, delta, buy, sell);
         if (profit > maxProfit){
             best_transaction[0] = i;
+            best_transaction[1] = buy;
             best_transaction[2] = sell;
             maxProfit = profit;
         }
@@ -132,6 +147,7 @@ vector<int> task3A(vector<vector<int> >& A) {
 
     return best_transaction;
 }
+
 
 
 
@@ -198,44 +214,60 @@ vector<int> task3B(vector<vector<int> >& A) {
 
 }
 
+vector<int> task4(vector<vector<int> >& A, int k) {
 
+}
+
+
+bool Equal(vector<int>& A, vector<int>& B){
+    if (A.size() != B.size()){
+        return false;
+    }
+
+    for (int i = 0; i < A.size(); i++){
+        if (A[i] != B[i]) {return false;}
+    }
+
+    return true;
+}
 
 
 
 int main() {
 
     vector<vector<int>> A(5, vector<int>(5));
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1000; i++) {
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
-                A[j][k] = rand() % 10;
-                cout << A[j][k] << " ";
+                A[j][k] = rand() % 1000;
+            }
+        }
+        vector<int> task1Result = task1(A);
+        vector<int> task2Result = task2(A);
+        vector<int> task3aResult = task3A(A);
+        vector<int> task3bResult = task3B(A);
+        if (!Equal(task1Result, task2Result) || !Equal(task1Result, task3aResult) ){
+            for (int x = 0; x < A.size(); x++) {
+                for (int y = 0; y < A[0].size(); y++) {
+                    cout << A[x][y] << " ";
+                }
+                cout << endl;
             }
             cout << endl;
+
+            cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+
+            cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+
+            cout << "Task 3a Result: " << task3aResult[0] << " " << task3aResult[1] << " " << task3aResult[2] << endl;
+
+            cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
+
+            cout << endl;
         }
-        cout << endl;
-
-        vector<int> task1Result = task1(A);
-
-        cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
-
-        vector<int> task2Result = task2(A);
-
-        cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
-
-        vector<int> task3aResult = task3A(A);
-
-        cout << "Task 3b Result: ";
-        for (i = 0; i < task3aResult.size(); i ++){
-            cout << task3aResult[i] << " ";
+        else {
+            cout << "Passed Test #" << i << endl;
         }
-
-        vector<int> task3bResult = task3B(A);
-
-        cout << endl;
-
-        cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
-        cout << endl;
 
 
 
@@ -243,35 +275,33 @@ int main() {
     }
 
 
-    int x[3][3] = {{1,2,3}, {3,5,9}, {2,3,4}};
 
-    /* we are essentially finding the greatest percentage change in our initial investment of an arbitrary amount A.
-     For the three days and three companies presented above if we start with am amount A invested in company 1,
-     by day 2 we have an amount 3A. If we then sell and buy company 2, by day three we have an amount 3A* 4/5 = 12A/5.
+//    vector<vector<int>> A = {{5,1,3,9,7}};
+//    for (int i = 0; i < A.size(); i++) {
+//        for (int j = 0; j < A[i].size(); j++) {
+//            cout << A[i][j] << " ";
+//        }
+//        cout << endl;
+//    }
+//
+//    vector<int> task1Result = task1(A);
+//
+//    cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
+//
+//    vector<int> task2Result = task2(A);
+//
+//    cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
+//
+//    vector<int> task3aResult = task3A(A);
+//
+//    cout << "Task 3a Result: " << task3aResult[0] << " " << task3aResult[1] << " " << task3aResult[2] << endl;
+//
+//    vector<int> task3bResult = task3B(A);
+//
+//
+//    cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
+//    cout << endl;
 
-     to calculate the transactions that maximize profit we have to consider at every day if we should buy stock
-     (assuming we don't have any stock ), whether to sell our current stock (if we have any), and whether to buy stock
-     (assuming we just sold our stock or don't have stock)
-
-
-     Observations:
-     1. We are not interested in the magnitude of a stock price, we are interested in its change over the days in question.
-
-     2. A set of stock prices for a given company, such as {2,4,1,6}, can be represented through an array specifying changes in
-        the stock price; {1,2,0.25, 6}, since day 2 has a stock price worth twice as much as day 1, day 3 has a stock price
-        worth a fourth as much as day 2, etc. We call this array a derivative array.
-
-    3. With one company, one set of stock prices (as listed above), and no limits on transactions. We can maximize profit by buying
-        on all days n where day n + 1 has a value in the derivative array greater than 1 and selling on all day's where the
-        derivative array has a value smaller than 1. We are indifferent on day's where the stock price equals 1.
-
-    2. With a set of companies, a set of corresponding stock prices, and no limits on transactions, we can also create a
-     derivative array. For the 2d-array shown above we have {{1,1,1}, {3,2.5,3}, {2/3,0.6,4/9}}. We can then maximize profit
-     by buying stock for a company m on day n if they have the greatest n+1 derivative array value assuming a value greater than 1 exists.
-     If no value greater than 1 exists we would buy nothing on day n.
-
-
-     */
 
 
 
