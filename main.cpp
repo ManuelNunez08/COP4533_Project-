@@ -60,27 +60,47 @@ vector<int> task2(vector<vector<int>>& A) {
 }
 
 
-int findMin( vector<int>& A, vector<int>& B, int i) {
+int findMin( vector<int>& A, vector<int>& B, int i, int &buy, int &sell) {
     if (i == 0){
         B[0] = A[0];
         return A[0];
     }
     else {
         if (B[i] == -1){
-            B[i] = min(A[i], findMin(A, B, i - 1));
+            int other = findMin(A, B, i - 1, buy, sell);
+            int current  = A[i];
+            if (current < other){
+                buy = i;
+                B[i] = current;
+            }
+            else {
+                B[i] = other;
+            }
+            //B[i] = min(A[i], findMin(A, B, i - 1, buy, sell));
         }
-        return B[i];
+        else {
+            return B[i];
+        }
     }
 
 
 }
 
-int findMax( vector<int>& A, vector<int>& B, int i, int &x, int &y) {
+int findMax( vector<int>& A, vector<int>& B, int i, int &buy, int &sell) {
     if (i == 0){
         return INT_MIN;
     }
     else {
-        return max((A[i] - findMin(A, B, i - 1)), findMax(A, B, i - 1, x, y));
+        int other = findMax(A, B, i - 1, buy, sell);
+        int current = A[i] - findMin(A, B, i - 1, buy, sell);
+
+        if (current > other){
+            sell = i;
+            return current;
+        }
+        else {
+            return other;
+        }
     }
 }
 
@@ -97,14 +117,15 @@ vector<int> task3A(vector<vector<int> >& A) {
     int maxProfit = INT_MIN;
 
     //temporary buy and sell days
-    int x  = 0;
-    int y  = 0;
+    int buy  = 0;
+    int sell  = 0;
     for (int i = 0; i < m; i++){
         vector<int> Empty (A[0].size(),-1);
-        int profit = findMax(A[i], Empty, A[0].size() - 1, &x, &y);
+        int profit = findMax(A[i], Empty, A[0].size() - 1, buy, sell);
 
         if (profit > maxProfit){
             best_transaction[0] = i;
+            best_transaction[2] = sell;
             maxProfit = profit;
         }
     }
