@@ -258,45 +258,61 @@ vector<int> task3B(vector<vector<int> >& A) {
 }
 
 
-int bestProfit(vector<vector<int> >& T,int i, vector<int>& buys, vector<int>& sells, vector<int>& comps, int size ){
-    if (i == T.size() - 1){
-        return T[i][3];
+int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, vector<vector<int>>& optimal, int i, int k ){
+    if (i == 0 || k == 0 ){
+        return 0;
+    }
+    else if (recorded[i] != -1){
+        return max(recorded[i], bestProfit(T, recorded, optimal, i - 1, k));
     }
     else {
-        int current = 0;
-        if (T[i][0] == 0){
-        current =  T[i][3];
+        int maxProfit = 0;
+        optimal.push_back({-1,-1,-1});
+        for (int j = i - 1; j >= 0; j--) {
+            int profit = T[j][i].second + bestProfit(T, recorded,optimal,  j, k - 1);
+            if (profit > maxProfit) {
+                maxProfit = profit;
+                optimal[optimal.size()-1][0] = j;
+                optimal[optimal.size()-1][1] = i;
+                optimal[optimal.size()-1][2] = T[j][i].first;
+            }
         }
-        else {
-         current = T[i][3] + bestProfit(T, T.size() - T[i][0], buys, sells, comps, size);
-        }
-        int other =  bestProfit(T, i + 1, buys, sells, comps, size);
+        recorded[i] = maxProfit; // record the maximum profit of a transaction with a sell day of i
+        int next = bestProfit(T, recorded, optimal, i - 1, k); // calculate the maximum profit of a transaction with a sell day of i -1
 
-        if (current > other){
-            buys.push_back(T[i][0]);
-            sells.push_back(T[i][1]);
-            comps.push_back(T[i][2]);
-
-            return current;
+        if (maxProfit <= next){
+            optimal.pop_back();
+            return next;
         }
         else{
-            return other;
+            return maxProfit;
         }
-
     }
 }
-
-int task4(vector<vector<int> >& A, int k) {
-    // we start by finding all possible transactions, sorting them by sell date, and only keeping the max one for
-    //equivalent sorting times. I aim to do so in O(n^2 * m)
-    vector<vector<int>> trans;
+/* /*The algorithm below finds the most profitable combination of at most k transactions for m companies and their respective
+ * stock prices over n days using a dynamic programming approach that incorporates both bottom up and top down techniques.
+ * The algorithm first computes an nxn table and stores for each entry [i][j] the most profitable transaction starting at day i and
+ * ending at day j (where i < j). It then uses recursion to traverse the nxn array to find the maximum profit possible
+ * from a max of k transactions by summing entries whose respective i and j indexes don't overlap with one another since
+ * only pone piece of stock can be held at once.
+ *
+ * The preprocessing element of the algorithm has a complexity of O(m*n*n)
+ * Using memoization, the recursive aspect of the algorithm has a complexity of O(n*n)
+ *
+ * The total time complexity is of the order O(m*n*n). */
+int task6(vector<vector<int> >& A, int k) {
     int companies = A.size();
     int days = A[0].size();
+    vector<vector<int>> trans;
+    /* The 2 dimensional table vector contains pairs storing the max profit for a transaction
+     * started (buy) on day i and finished (sell) on day j as well as the company through which it's generated  */
+    vector<vector<pair<int, int>>> table(days, vector<pair<int, int>>(days,{-1, -1}));
     for (int i  = days - 1; i > 0; i--){
-        vector<int> tran = {-1,-1,-1,0};
         for (int k = i -1; k >= 0; k --){
+            vector<int> tran = {-1,-1,-1,INT_MIN};
             for (int j  = 0; j < companies; j++){
                 int profit = A[j][i] - A[j][k];
+                // update a transaction covering a given interval if a better transaction covering that interval is found.
                 if ( profit > tran[3]) {
                     tran[0] = k;
                     tran[1] = i;
@@ -304,8 +320,9 @@ int task4(vector<vector<int> >& A, int k) {
                     tran[3] = profit;
                 }
             }
+            trans.push_back(tran);
+            table[tran[0]][tran[1]] = {tran[2], tran[3]};
         }
-        trans.push_back(tran);
     }
 
     for (int x = 0; x < trans.size(); x++) {
@@ -314,19 +331,32 @@ int task4(vector<vector<int> >& A, int k) {
     }
     cout << endl;
 
-    vector<int> buys;
-    vector<int> sells;
-    vector<int> comps;
 
-    int size = (trans[0][1] - trans[trans.size() - 1][1]) + 1;
-    int max =  bestProfit(trans, 0,buys, sells, comps, size);
+    for (int x = 0; x < table.size(); x++) {
+        for (int y  = 0; y < table[0].size(); y++  ) {
+            cout << "( " << table[x][y].first << ", " << table[x][y].second << " )";
+        }
+        cout << endl;
+    }
+    cout << endl;
 
-//    for (int x = 0; x < buys.size(); x++) {
-//        cout << "Buy: " << buys[x] << " | Sell: " << sells[x] <<  " | Company: " << comps[x];
-//        cout << endl;
-//    }
+    // create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
+    vector<int>recorded(days - 1, -1);
+    //vector to store transactions
+    vector<vector<int>> optimal;
+    int max =  bestProfit(table, recorded, optimal, table.size()-1, k);
+    cout << "transactions: " << endl;
+    for (int x = 0; x < optimal.size(); x++) {
+        for (int y  = 0; y < optimal[0].size(); y++  ) {
+            cout << optimal[x][y] << ", " ;
+        }
+        cout << endl;
+    }
+    cout << endl;
+    cout << "Max Profit: " << max << endl;
 
     return max;
+
 
 
 }
@@ -458,16 +488,17 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 
 int main() {
-    vector<vector<int>> A = {{1, 100,4,10}};
-    int maxProfit = task4(A, 0);
-
+    vector<vector<int>> A = {{4, 100, 1 ,100,1}};
     for(int i =0; i < A.size(); i++){
         for (int j = 0; j < A[0].size(); j++){
             cout << A[i][j] << " ";
         }
         cout << endl;
     }
-    cout << endl << "Max Profit: " << maxProfit;
+    cout << endl;
+    task6(A, 1);
+
+
 
 
 
