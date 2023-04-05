@@ -601,18 +601,33 @@ int main() {
         }
         cout << endl;
         task6(A, 2);
+        cout << endl;
         vector<vector<int>> task4Result = task4K2(A);
         vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
+        int profit = 0;
         cout << "Task 4K2 Result: " << endl;
         for (int l = 0; l < task4Result.size(); l++) {
             cout << "Transaction " << l + 1 << ": Stock: " << task4Result[l][0] << " | BuyDay: " << task4Result[l][1] << " | SellDay:"
                  << task4Result[l][2] << endl;
+            int stock = task4bResult[l][0];
+            int buyDay = task4bResult[l][1];
+            int sellDay = task4bResult[l][2];
+            profit += A[stock][sellDay] - A[stock][buyDay];
         }
+        cout << "Profit: " << profit << endl;
+        cout << endl;
         cout << "Task 4AnyK Result: " << endl;
+        profit = 0;
         for (int l = 0; l < task4bResult.size(); l++) {
             cout << "Transaction: " << l + 1 << ": Stock: " << task4bResult[l][0] << " | BuyDay: " << task4bResult[l][1] << " | SellDay:"
                  << task4bResult[l][2] << endl;
+            int stock = task4bResult[l][0];
+            int buyDay = task4bResult[l][1];
+            int sellDay = task4bResult[l][2];
+            profit += A[stock][sellDay] - A[stock][buyDay];
         }
+        cout << "Profit: " << profit << endl;
+        cout << "-----------------------------------------------------------------------" << endl;
     }
         return 0;
 }
