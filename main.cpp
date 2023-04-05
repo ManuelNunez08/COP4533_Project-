@@ -257,43 +257,80 @@ vector<int> task3B(vector<vector<int> >& A) {
     return best_transaction;
 }
 
-//vector<int> task4(vector<vector<int> >& A, int k) {
-//    /*For each day,
-//     *  if we are currently holding stock
-//     *      if we sell it
-//     *          buy another or don't
-//     *      if we don't sell it
-//     *  if we are not currently holding stock
-//     *     if we buy stock (k-1)
-//     *     if we don't*/
-//
-//    int numTransactions  = k;
-//
-//    for(int i  = 0; i < A[0].size(); i++){
-//        for(int j = 0; j < A.size(); j++){
-//            A[j][i]
-//        }
+
+int bestProfit(vector<vector<int> >& T,int i, vector<int>& buys, vector<int>& sells, vector<int>& comps, int size ){
+    if (i == T.size() - 1){
+        return T[i][3];
+    }
+    else {
+        int current = 0;
+        if (T[i][0] == 0){
+        current =  T[i][3];
+        }
+        else {
+         current = T[i][3] + bestProfit(T, T.size() - T[i][0], buys, sells, comps, size);
+        }
+        int other =  bestProfit(T, i + 1, buys, sells, comps, size);
+
+        if (current > other){
+            buys.push_back(T[i][0]);
+            sells.push_back(T[i][1]);
+            comps.push_back(T[i][2]);
+
+            return current;
+        }
+        else{
+            return other;
+        }
+
+    }
+}
+
+int task4(vector<vector<int> >& A, int k) {
+    // we start by finding all possible transactions, sorting them by sell date, and only keeping the max one for
+    //equivalent sorting times. I aim to do so in O(n^2 * m)
+    vector<vector<int>> trans;
+    int companies = A.size();
+    int days = A[0].size();
+    for (int i  = days - 1; i > 0; i--){
+        vector<int> tran = {-1,-1,-1,0};
+        for (int k = i -1; k >= 0; k --){
+            for (int j  = 0; j < companies; j++){
+                int profit = A[j][i] - A[j][k];
+                if ( profit > tran[3]) {
+                    tran[0] = k;
+                    tran[1] = i;
+                    tran[2] = j;
+                    tran[3] = profit;
+                }
+            }
+        }
+        trans.push_back(tran);
+    }
+
+    for (int x = 0; x < trans.size(); x++) {
+        cout << "Buy: " << trans[x][0] << " | Sell: " << trans[x][1] <<  " | Company: " << trans[x][2] <<  " | Profit:" << trans[x][3];
+        cout << endl;
+    }
+    cout << endl;
+
+    vector<int> buys;
+    vector<int> sells;
+    vector<int> comps;
+
+    int size = (trans[0][1] - trans[trans.size() - 1][1]) + 1;
+    int max =  bestProfit(trans, 0,buys, sells, comps, size);
+
+//    for (int x = 0; x < buys.size(); x++) {
+//        cout << "Buy: " << buys[x] << " | Sell: " << sells[x] <<  " | Company: " << comps[x];
+//        cout << endl;
 //    }
-//
-//
-//
-//}
-//
-//int task4Recurse(vector<vector<int> >& A,int day, int owning, int k) {
-//    if (day  == 0) {
-//        if (owning != -1){
-//            return A[owning][day];
-//        }
-//    }
-//    else {
-//        for(int i  = 0; i < A.size(); i ++){
-//            if (owning != -1){
-//                return A[owning][day];
-//            }
-//        }
-//    }
-//
-//}
+
+    return max;
+
+
+}
+
 
 void Plot1() {
 
@@ -421,12 +458,23 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 
 int main() {
-    Plot1();
-    Plot2();
+    vector<vector<int>> A = {{1, 100,4,10}};
+    int maxProfit = task4(A, 0);
+
+    for(int i =0; i < A.size(); i++){
+        for (int j = 0; j < A[0].size(); j++){
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl << "Max Profit: " << maxProfit;
 
 
 
-    return 0;
+
+
+
+        return 0;
 }
 
 
