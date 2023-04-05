@@ -593,7 +593,14 @@ int main() {
                 A[j][k] = rand() % 10;
             }
         }
+        // Formatting for the Matrix for readability
+        cout << "  ";
+        for(int i = 0; i < A.size();i++){
+            cout << " " << "\033[4m" << i << "\033[0m";
+        }
+        cout << endl;
         for (int i = 0; i < A.size(); i++) {
+            cout << i << "| ";
             for (int j = 0; j < A[0].size(); j++) {
                 cout << A[i][j] << " ";
             }
