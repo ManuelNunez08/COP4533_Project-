@@ -256,7 +256,85 @@ vector<int> task3B(vector<vector<int> >& A) {
     best_transaction[2] = sellDay;
     return best_transaction;
 }
+vector<vector<int>> task4K2(vector<vector<int> >& A) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    vector<vector<int>> best_transactions(2,vector<int>(3, -1)); // best_transactions 2d array with k transactions.
 
+    // ATTEMPT AT K=2
+    for (int i = 0; i < m; i++) { // Stock loop for FIRST transaction
+        for (int j = 0; j < n; j++) { // Buyday loop for FIRST transaction
+            for (int k = j + 1; k < n; k++) { // SellDay loop for FIRST transaction
+                for(int z = 0; z < m; z++) { // Stock loop for SECOND transaction
+                    for (int l = k; l < n; l++) { //Buy day loop for SECOND transaction
+                        for (int o = l + 1; o < n; o++) { // SellDay loop for SECOND transaction
+                            int profit1 = A[i][k] - A[i][j]; // Transaction 1: i j k
+                            int profit2 = A[z][o] - A[z][l]; // Transaction 2: z l o
+                            int total_profit = profit1 + profit2;
+                            if (total_profit > max_profit) {
+                                max_profit = total_profit;
+                                best_transactions[0][0] = i;
+                                best_transactions[0][1] = j;
+                                best_transactions[0][2] = k;
+                                best_transactions[1][0] = z;
+                                best_transactions[1][1] = l;
+                                best_transactions[1][2] = o;
+                            }
+                        }
+                    }
+                }
+                int profit4 = A[i][k] - A[i][j]; // Transaction 1: i j k
+                // One transaction
+                if (profit4 > max_profit) {
+                    max_profit = profit4;
+                    best_transactions[0][0] = i;
+                    best_transactions[0][1] = j;
+                    best_transactions[0][2] = k;
+                    best_transactions[1][0] = -1;
+                    best_transactions[1][1] = -1;
+                    best_transactions[1][2] = -1;
+                }
+            }
+        }
+    }
+    return best_transactions;
+}
+vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+
+    for (int i = 0; i < m; i++) { // Stock loop for transactions
+        for (int j = startCol; j < n; j++) { // Buyday loop for transactions
+            for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
+                if(k > 1){
+                    tempBest_transactions = task4AnyK(A, k-1, l);
+                }
+                int profit1 = A[i][l] - A[i][j]; // Transaction 1: Stock: i BuyDay: j SellDay: l
+                int profit2 = 0; // Max profit from the best transactions from the recursive call;
+                for(int z = 0; z<tempBest_transactions.size(); z++){ // Looping through best transactions from recursive call to add their profits
+                    int stock = tempBest_transactions[z][0];
+                    int buyDay = tempBest_transactions[z][1];
+                    int sellDay = tempBest_transactions[z][2];
+                    profit2 += A[stock][sellDay] - A[stock][buyDay];
+                }
+                int total_profit = profit1 + profit2;
+                if (total_profit > max_profit) {
+                    max_profit = total_profit;
+                    best_transactions.clear(); // Clears the best transactions 2d array because we found new better transactions
+                    best_transactions.push_back({i,j,l}); // Adding the transaction from this call to the beginning of the best_transactions list;
+                    for(int z = 0; z<tempBest_transactions.size(); z++){
+                        best_transactions.push_back(tempBest_transactions[z]);  // Adding the transactions from the recursive call to the best list
+                    }
+                }
+            }
+        }
+    }
+    return best_transactions;
+}
 
 //int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, vector<vector<int>>& optimal, int i, int k ){
 //    if (i == 0 || k == 0 ){
@@ -507,7 +585,7 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 
 int main() {
-    vector<vector<int>> A = {{4, 12, 1 ,16,10}, {4, 6, 1 ,13, 1} };
+    vector<vector<int>> A = {{1, 9, 8 ,7,6}, {10, 6, 5 ,2, 1} };
     for(int i =0; i < A.size(); i++){
         for (int j = 0; j < A[0].size(); j++){
             cout << A[i][j] << " ";
@@ -515,15 +593,18 @@ int main() {
         cout << endl;
     }
     cout << endl;
-    task6(A, 3);
-
-
-
-
-
-
-
-
+    task6(A, 2);
+    vector<vector<int>> task4Result = task4K2(A);
+    vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
+    cout << "Task 4K2 Result: " << endl;
+    for (int l = 0; l<task4Result.size();l++) {
+        cout << "Transaction " << l+1 << ": " << task4Result[l][0] << " " << task4Result[l][1] << " " << task4Result[l][2] << endl;
+    }
+    cout << "Task 4AnyK Result: " << endl;
+    for (int l = 0; l<task4bResult.size();l++) {
+        cout << "Transaction " << l + 1 << ": " << task4bResult[l][0] << " " << task4bResult[l][1] << " "
+             << task4bResult[l][2] << endl;
+    }
         return 0;
 }
 

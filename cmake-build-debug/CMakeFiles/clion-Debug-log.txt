@@ -1,0 +1,36 @@
+"C:\Program Files\JetBrains\CLion 2023.1\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Program Files/JetBrains/CLion 2023.1/bin/ninja/win/x64/ninja.exe" -DCMAKE_C_COMPILER=C:/Users/andre/Documents/GitHub/COP4533_Project-/main.cpp -G Ninja -S C:\Users\andre\Documents\GitHub\COP4533_Project- -B C:\Users\andre\Documents\GitHub\COP4533_Project-\cmake-build-debug
+-- The C compiler identification is unknown
+-- The CXX compiler identification is GNU 11.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - failed
+-- Check for working C compiler: C:/Users/andre/Documents/GitHub/COP4533_Project-/main.cpp
+-- Check for working C compiler: C:/Users/andre/Documents/GitHub/COP4533_Project-/main.cpp - broken
+CMake Error at C:/Program Files/JetBrains/CLion 2023.1/bin/cmake/win/x64/share/cmake-3.25/Modules/CMakeTestCCompiler.cmake:70 (message):
+  The C compiler
+
+    "C:/Users/andre/Documents/GitHub/COP4533_Project-/main.cpp"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: C:/Users/andre/Documents/GitHub/COP4533_Project-/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-o5dox4
+    
+    Run Build Command(s):C:/Program Files/JetBrains/CLion 2023.1/bin/ninja/win/x64/ninja.exe cmTC_49014 && 
+    CreateProcess failed. Command attempted:
+    "C:\Users\andre\Documents\GitHub\COP4533_Project-\main.cpp    -o CMakeFiles\cmTC_49014.dir\testCCompiler.c.obj -c C:\Users\andre\Documents\GitHub\COP4533_Project-\cmake-build-debug\CMakeFiles\CMakeScratch\TryCompile-o5dox4\testCCompiler.c"
+    ninja: fatal: CreateProcess: %1 is not a valid Win32 application.
+    
+    
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (project)
+
+
+-- Configuring incomplete, errors occurred!
+See also "C:/Users/andre/Documents/GitHub/COP4533_Project-/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "C:/Users/andre/Documents/GitHub/COP4533_Project-/cmake-build-debug/CMakeFiles/CMakeError.log".
