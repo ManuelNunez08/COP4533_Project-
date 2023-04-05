@@ -258,35 +258,54 @@ vector<int> task3B(vector<vector<int> >& A) {
 }
 
 
-int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, vector<vector<int>>& optimal, int i, int k ){
+//int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, vector<vector<int>>& optimal, int i, int k ){
+//    if (i == 0 || k == 0 ){
+//        return 0;
+//    }
+//    else if (recorded[i] != -1){
+//        return max(recorded[i], bestProfit(T, recorded, optimal, i - 1, k));
+//    }
+//    else {
+//        int maxProfit = 0;
+//        optimal.push_back({-1,-1,-1});
+//        for (int j = i - 1; j >= 0; j--) {
+//            int profit = T[j][i].second + bestProfit(T, recorded,optimal,  j, k - 1);
+//            if (profit > maxProfit) {
+//                maxProfit = profit;
+//                optimal[optimal.size()-1][0] = j;
+//                optimal[optimal.size()-1][1] = i;
+//                optimal[optimal.size()-1][2] = T[j][i].first;
+//            }
+//        }
+//        recorded[i] = maxProfit; // record the maximum profit of a transaction with a sell day of i
+//        int next = bestProfit(T, recorded, optimal, i - 1, k); // calculate the maximum profit of a transaction with a sell day of i -1
+//
+//        if (maxProfit <= next){
+//            optimal.pop_back();
+//            return next;
+//        }
+//        else{
+//            return maxProfit;
+//        }
+//    }
+//}
+int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, int i, int k ){
     if (i == 0 || k == 0 ){
         return 0;
     }
     else if (recorded[i] != -1){
-        return max(recorded[i], bestProfit(T, recorded, optimal, i - 1, k));
+        return max(recorded[i], bestProfit(T, recorded,  i - 1, k));
     }
     else {
         int maxProfit = 0;
-        optimal.push_back({-1,-1,-1});
         for (int j = i - 1; j >= 0; j--) {
-            int profit = T[j][i].second + bestProfit(T, recorded,optimal,  j, k - 1);
+            int profit = T[j][i].second + bestProfit(T, recorded,  j, k - 1);
             if (profit > maxProfit) {
                 maxProfit = profit;
-                optimal[optimal.size()-1][0] = j;
-                optimal[optimal.size()-1][1] = i;
-                optimal[optimal.size()-1][2] = T[j][i].first;
             }
         }
         recorded[i] = maxProfit; // record the maximum profit of a transaction with a sell day of i
-        int next = bestProfit(T, recorded, optimal, i - 1, k); // calculate the maximum profit of a transaction with a sell day of i -1
-
-        if (maxProfit <= next){
-            optimal.pop_back();
-            return next;
-        }
-        else{
-            return maxProfit;
-        }
+        return max(maxProfit, bestProfit(T, recorded, i-1, k));
     }
 }
 /* /*The algorithm below finds the most profitable combination of at most k transactions for m companies and their respective
@@ -344,7 +363,7 @@ int task6(vector<vector<int> >& A, int k) {
     vector<int>recorded(days - 1, -1);
     //vector to store transactions
     vector<vector<int>> optimal;
-    int max =  bestProfit(table, recorded, optimal, table.size()-1, k);
+    int max =  bestProfit(table, recorded, table.size()-1, k);
     cout << "transactions: " << endl;
     for (int x = 0; x < optimal.size(); x++) {
         for (int y  = 0; y < optimal[0].size(); y++  ) {
@@ -488,7 +507,7 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 
 int main() {
-    vector<vector<int>> A = {{4, 100, 1 ,100,1}};
+    vector<vector<int>> A = {{4, 12, 1 ,16,10}, {4, 6, 1 ,13, 1} };
     for(int i =0; i < A.size(); i++){
         for (int j = 0; j < A[0].size(); j++){
             cout << A[i][j] << " ";
@@ -496,7 +515,7 @@ int main() {
         cout << endl;
     }
     cout << endl;
-    task6(A, 1);
+    task6(A, 3);
 
 
 
