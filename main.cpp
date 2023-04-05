@@ -585,25 +585,34 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 
 int main() {
-    vector<vector<int>> A = {{1, 9, 8 ,7,6}, {10, 6, 5 ,2, 1} };
-    for(int i =0; i < A.size(); i++){
-        for (int j = 0; j < A[0].size(); j++){
-            cout << A[i][j] << " ";
+    //vector<vector<int>> A = {{1, 9, 8 ,7,6}, {10, 6, 5 ,2, 1} };
+    vector<vector<int>> A(5, vector<int>(5));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10;
+            }
+        }
+        for (int i = 0; i < A.size(); i++) {
+            for (int j = 0; j < A[0].size(); j++) {
+                cout << A[i][j] << " ";
+            }
+            cout << endl;
         }
         cout << endl;
-    }
-    cout << endl;
-    task6(A, 2);
-    vector<vector<int>> task4Result = task4K2(A);
-    vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
-    cout << "Task 4K2 Result: " << endl;
-    for (int l = 0; l<task4Result.size();l++) {
-        cout << "Transaction " << l+1 << ": " << task4Result[l][0] << " " << task4Result[l][1] << " " << task4Result[l][2] << endl;
-    }
-    cout << "Task 4AnyK Result: " << endl;
-    for (int l = 0; l<task4bResult.size();l++) {
-        cout << "Transaction " << l + 1 << ": " << task4bResult[l][0] << " " << task4bResult[l][1] << " "
-             << task4bResult[l][2] << endl;
+        task6(A, 2);
+        vector<vector<int>> task4Result = task4K2(A);
+        vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
+        cout << "Task 4K2 Result: " << endl;
+        for (int l = 0; l < task4Result.size(); l++) {
+            cout << "Transaction " << l + 1 << ": Stock: " << task4Result[l][0] << " | BuyDay: " << task4Result[l][1] << " | SellDay:"
+                 << task4Result[l][2] << endl;
+        }
+        cout << "Task 4AnyK Result: " << endl;
+        for (int l = 0; l < task4bResult.size(); l++) {
+            cout << "Transaction: " << l + 1 << ": Stock: " << task4bResult[l][0] << " | BuyDay: " << task4bResult[l][1] << " | SellDay:"
+                 << task4bResult[l][2] << endl;
+        }
     }
         return 0;
 }
