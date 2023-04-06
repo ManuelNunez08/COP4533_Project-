@@ -367,23 +367,28 @@ vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
 //        }
 //    }
 //}
-int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, int i, int k ){
+int bestProfit(vector<vector<pair<int, int>>>& T, vector<vector<int>> & recorded, int i, int k, int &count ){
     if (i == 0 || k == 0 ){
         return 0;
     }
-    else if (recorded[i-1] != -1){
-        return max(recorded[i-1], bestProfit(T, recorded,  i - 1, k));
-    }
     else {
-        int maxProfit = 0;
+        int maxProfit = INT_MIN;
         for (int j = i - 1; j >= 0; j--) {
-            int profit = T[j][i].second + bestProfit(T, recorded,  j, k - 1);
+            count++;
+            int profit = INT_MIN;
+            if (recorded[j][i] != -1){
+                profit =  recorded[j][i];
+            }
+            else {
+                profit = T[j][i].second + bestProfit(T, recorded, j, k - 1, count );
+                recorded[j][i] = profit;
+            }
             if (profit > maxProfit) {
                 maxProfit = profit;
             }
         }
-        recorded[i] = maxProfit; // record the maximum profit of a transaction with a sell day of i
-        return max(maxProfit, bestProfit(T, recorded, i-1, k));
+        // record the maximum profit of a transaction with a sell day of i
+        return max(maxProfit, bestProfit(T, recorded, i-1, k, count));
     }
 }
 /* /*The algorithm below finds the most profitable combination of at most k transactions for m companies and their respective
@@ -422,33 +427,38 @@ int task6(vector<vector<int> >& A, int k) {
         }
     }
 
-    for (int x = 0; x < trans.size(); x++) {
-        cout << "Buy: " << trans[x][0] << " | Sell: " << trans[x][1] <<  " | Company: " << trans[x][2] <<  " | Profit:" << trans[x][3];
-        cout << endl;
-    }
-    cout << endl;
-
-
-    for (int x = 0; x < table.size(); x++) {
-        for (int y  = 0; y < table[0].size(); y++  ) {
-            cout << "( " << table[x][y].first << ", " << table[x][y].second << " )";
-        }
-        cout << endl;
-    }
-    cout << endl;
+//    for (int x = 0; x < trans.size(); x++) {
+//        cout << "Buy: " << trans[x][0] << " | Sell: " << trans[x][1] <<  " | Company: " << trans[x][2] <<  " | Profit:" << trans[x][3];
+//        cout << endl;
+//    }
+//    cout << endl;
+//
+//
+//    for (int x = 0; x < table.size(); x++) {
+//        for (int y  = 0; y < table[0].size(); y++  ) {
+//            cout << "( " << table[x][y].first << ", " << table[x][y].second << " )";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
 
     // create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
-    vector<int>recorded(days - 1, -1);
+    vector<vector<int>>recorded(days , vector<int>(days, -1));
     //vector to store transactions
     vector<vector<int>> optimal;
-    int max =  bestProfit(table, recorded, table.size()-1, k);
-    cout << "transactions: " << endl;
-    for (int x = 0; x < optimal.size(); x++) {
-        for (int y  = 0; y < optimal[0].size(); y++  ) {
-            cout << optimal[x][y] << ", " ;
+    int count = 0;
+    int max =  bestProfit(table, recorded, table.size()-1, k, count );
+    cout << "count: " << count << endl;
+
+
+    cout << "table: " << endl;
+    for (int x = 0; x < recorded.size(); x++) {
+        for (int y  = 0; y < recorded[0].size(); y++  ) {
+            cout << recorded[x][y] << ", " ;
         }
         cout << endl;
     }
+//
     cout << endl;
     cout << "Max Profit: " << max << endl;
 
@@ -586,7 +596,7 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 int main() {
     //vector<vector<int>> A = {{1, 9, 8 ,7,6}, {10, 6, 5 ,2, 1} };
-    vector<vector<int>> A(4, vector<int>(4));
+    vector<vector<int>> A(10, vector<int>(10));
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
@@ -636,7 +646,12 @@ int main() {
         cout << "Profit: " << profit << endl;
         cout << "-----------------------------------------------------------------------" << endl;
     }
-        return 0;
+
+//    vector<vector<int>> A = {{5 ,4 ,9 ,1 }, {7 ,5 ,5 ,4 }, {1 ,8 ,8 ,3, }, {5 ,2 ,2 ,6} };
+//    task6(A,2);
+
+
+    return 0;
 }
 
 
