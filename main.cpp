@@ -610,7 +610,7 @@ int main() {
         task6(A, 2);
         cout << endl;
         vector<vector<int>> task4Result = task4K2(A);
-        vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
+        vector<vector<int>> task4bResult = task4AnyK(A, 5, 0);
         int profit = 0;
         cout << "Task 4K2 Result: " << endl;
         for (int l = 0; l < task4Result.size(); l++) {
