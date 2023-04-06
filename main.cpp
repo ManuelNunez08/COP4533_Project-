@@ -371,8 +371,8 @@ int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, int i, 
     if (i == 0 || k == 0 ){
         return 0;
     }
-    else if (recorded[i] != -1){
-        return max(recorded[i], bestProfit(T, recorded,  i - 1, k));
+    else if (recorded[i-1] != -1){
+        return max(recorded[i-1], bestProfit(T, recorded,  i - 1, k));
     }
     else {
         int maxProfit = 0;
@@ -586,7 +586,7 @@ bool Equal(vector<int>& A, vector<int>& B){
 
 int main() {
     //vector<vector<int>> A = {{1, 9, 8 ,7,6}, {10, 6, 5 ,2, 1} };
-    vector<vector<int>> A(5, vector<int>(5));
+    vector<vector<int>> A(4, vector<int>(4));
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
@@ -610,7 +610,7 @@ int main() {
         task6(A, 2);
         cout << endl;
         vector<vector<int>> task4Result = task4K2(A);
-        vector<vector<int>> task4bResult = task4AnyK(A, 5, 0);
+        vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
         int profit = 0;
         cout << "Task 4K2 Result: " << endl;
         for (int l = 0; l < task4Result.size(); l++) {
