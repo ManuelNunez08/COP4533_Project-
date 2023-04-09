@@ -7,6 +7,310 @@ using namespace std;
 using namespace std::chrono;
 
 
+
+vector<int> task1(vector<vector<int>>& A);
+
+vector<int> task2(vector<vector<int>>& A);
+
+int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta);
+int findMax( vector<int>& A,  vector<pair <int, int>>& B, int i,int &delta, int &buy, int &sell);
+vector<int> task3A(vector<vector<int> >& A);
+
+vector<int> task3B(vector<vector<int> >& A);
+
+void Plot1();
+void Plot2();
+
+vector<vector<int>> task4K2(vector<vector<int> >& A);
+
+vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol);
+
+int bestProfit(vector<vector<pair<int, int>>>& T, vector<vector<vector<int>>> & recorded, int i, int k, int &count );
+int task6(vector<vector<int> >& A, int k);
+
+
+vector<vector<int>> task6New(vector<vector<int>>& A, int k);
+
+int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vector<int>>>& recorded,  int day, int k){
+    // if day 0 is reached, or we've run out of transactions and are not currently holding stock.
+    if (day == 0 || (k == 0 && holding.first == -1)){
+        // if we are holding stock, it must be day 0 for us to be in this method, so sell whatever you have
+        if (holding.first != -1){
+            return (holding.second - A[holding.first][day]);
+        }
+        // else, either because its day 0 and we have no stock or because it's an arbitrary day, but we have no stock or
+        // transactions left.
+        else
+        {
+            return 0;
+        }
+    }
+    // else if we are not holding anything, consider buying something or skipping the current day.
+    else if(holding.first == -1){
+        int maxProfit = INT_MIN;
+        for(int i = 0; i < A.size(); i++){
+            int profit  = INT_MIN;
+            if(recorded[i][day][k-1] != -1){
+                profit = recorded[i][day][k-1];
+            }
+            else {
+                pair<int, int> sold = {i, A[i][day]};
+                profit = findBest(A, sold, recorded, day - 1, k - 1);
+                recorded[i][day][k-1] = profit;
+            }
+            if(profit > maxProfit){
+                maxProfit = profit;
+            }
+        }
+        return max(maxProfit, findBest(A, holding, recorded, day-1, k));
+    }
+    // else if we are holding stock consider selling it, or to continue holding it.
+    else{
+        pair<int, int> clearHold = {-1,-1};
+        return max( (holding.second - A[holding.first][day]) + findBest(A,clearHold,recorded, day, k), findBest(A, holding,recorded, day-1, k)  );
+    }
+}
+
+
+bool Equal(vector<int>& A, vector<int>& B){
+    if (A.size() != B.size()){
+        return false;
+    }
+
+    for (int i = 0; i < A.size(); i++){
+        if (A[i] != B[i]) {return false;}
+    }
+
+    return true;
+}
+
+void testProblem2(int days, int companies, int k,vector<string>& methods);
+
+int main() {
+
+    vector<string> test = {"4", "6"};
+    testProblem2(5, 3, 3, test);
+    vector<vector<int>> A  = {{8 ,7 ,7, 4, 4} , {9, 1, 5, 5, 5 }, {8, 2, 9, 8, 2 },};
+    vector<vector<int>> task6Result = task6New(A, 3);
+    int profit = 0;
+    for (int l = 0; l < task6Result.size(); l++) {
+        int stock = task6Result[l][0];
+        int buyDay = task6Result[l][1];
+        int sellDay = task6Result[l][2];
+        cout << stock << " " << buyDay << " " << sellDay << endl;
+        profit += A[stock][sellDay] - A[stock][buyDay];
+    }
+    cout << "Profit: " << profit << endl;
+    return 0;
+}
+
+
+vector<vector<int>> findIndices( vector<vector<vector<int>>>& T, vector<vector<int>>& A, int k ){
+
+    vector<pair<int, int>> maxesK;
+    int currMax = INT_MIN;
+    int max = INT_MIN;
+    int day = -1;
+    int company = -1;
+    for (int i = T[0].size() - 1; i >= 0; i--) {
+        for (int j = 0 ; j <  T.size() ; j++) {
+            if (T[j][i][k - 1] > max) {
+                max = T[j][i][k - 1];
+                day = i;
+                company = j;
+            }
+        }
+    }
+
+    vector<vector<int>> transactions;
+    int currK = k - 2;
+    int maxDay = day;
+    int buyDay = -1;
+    int maxChange = INT_MIN;
+    for (int i = maxDay - 1; i >= 0; i--) {
+            if (k  == 0) {break;}
+            else if (i == 0){
+                transactions.push_back({company, i, day});
+            }
+            if (A[company][day] - A[company][i] > maxChange){
+                maxChange = A[company][day] - A[company][i];
+                buyDay = i;
+            }
+        for(int j = 0; j < A.size(); j++ ){
+            if (T[j][i][currK] == max - maxChange){
+                transactions.push_back({company, buyDay, day});
+                day = i;
+                company = j;
+                max = T[j][i][currK];
+                currK = currK - 1;
+                maxChange = INT_MIN;
+                break;
+            }
+        }
+    }
+
+
+    return transactions;
+    
+}
+
+
+void testProblem2(int days, int companies, int k, vector<string>& methods){
+    vector<vector<int>> A(companies, vector<int>(days));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < companies; j++) {
+            for (int k = 0; k < days; k++) {
+                A[j][k] = rand() % 10;
+            }
+        }
+//        // Formatting for the Matrix for readability
+//        cout << "  ";
+//        for(int i = 0; i < days;i++){
+//            cout << " " << "\033[4m" << i << "\033[0m";
+//        }
+//        cout << endl;
+//        for (int i = 0; i < companies; i++) {
+//            cout << i << "| ";
+//            for (int j = 0; j < days; j++) {
+//                cout << A[i][j] << " ";
+//            }
+//            cout << endl;
+//        }
+//        cout << endl;
+//        cout << endl;
+
+        if (methods.begin(), methods.end(), "4") {
+            vector<vector<int>> task4bResult = task4AnyK(A, k, 0);
+            int profit = 0;
+            cout << endl;
+            cout << "Task 4 Result: " << endl;
+            for (int l = 0; l < task4bResult.size(); l++) {
+                int stock = task4bResult[l][0];
+                int buyDay = task4bResult[l][1];
+                int sellDay = task4bResult[l][2];
+                cout << stock << " " << buyDay << " " << sellDay << endl;
+                profit += A[stock][sellDay] - A[stock][buyDay];
+            }
+            cout << "Profit: " << profit << endl << endl;
+        }
+
+        if (methods.begin(), methods.end(), "6") {
+            vector<vector<int>> task6Result = task6New(A, k);
+            cout << endl;
+            cout << "Task 6 Result: " << endl;
+            int profit = 0;
+            for (int l = 0; l < task6Result.size(); l++) {
+                int stock = task6Result[l][0];
+                int buyDay = task6Result[l][1];
+                int sellDay = task6Result[l][2];
+                cout << stock << " " << buyDay << " " << sellDay << endl;
+                profit += A[stock][sellDay] - A[stock][buyDay];
+            }
+            cout << "Profit: " << profit << endl;
+        }
+
+        cout << "-----------------------------------------------------------------------" << endl;
+    }
+}
+
+vector<vector<int>> task6New(vector<vector<int>>& A, int k){
+    vector<vector<vector<int>>>recorded(A.size() , vector<vector<int>>(A[0].size(), vector<int>(k, -1)));
+    pair<int, int> holding = {-1, -1};
+
+    int max  = findBest(A, holding, recorded,  A[0].size() - 1, k);
+    cout << "Task 6 profit :" << max << endl;
+    for (int i = 0; i < recorded.size(); i++) {
+        for (int j = 0; j < recorded[0].size(); j++) {
+            cout << "(";
+            for (int k = 0; k < recorded[0][0].size(); k++) {
+                cout << recorded[i][j][k] << " ";
+            }
+            cout << ")";
+        }
+        cout << endl;
+    }
+
+    return findIndices(recorded,A, k);
+
+}
+
+
+int bestProfit(vector<vector<pair<int, int>>>& T, vector<vector<vector<int>>> & recorded, int i, int k, int &count ){
+    if (i == 0 || k == 0 ){
+        return 0;
+    }
+    else {
+
+        int maxProfit = INT_MIN;
+        for (int j = i - 1; j >= 0; j--) {
+            count++;
+            int profit = INT_MIN;
+            if (recorded[j][i][k-1] != -1){
+                profit =  recorded[j][i][k-1];
+            }
+            else {
+                profit = T[j][i].second + bestProfit(T, recorded, j, k - 1, count );
+                recorded[j][i][k-1] = profit;
+            }
+            if (profit > maxProfit) {
+                maxProfit = profit;
+            }
+        }
+        // record the maximum profit of a transaction with a sell day of i
+        return max(maxProfit, bestProfit(T, recorded, i-1, k, count));
+    }
+}
+
+
+/* /*The algorithm below finds the most profitable combination of at most k transactions for m companies and their respective
+ * stock prices over n days using a dynamic programming approach that incorporates both bottom up and top down techniques.
+ * The algorithm first computes an nxn table and stores for each entry [i][j] the most profitable transaction starting at day i and
+ * ending at day j (where i < j). It then uses recursion to traverse the nxn array to find the maximum profit possible
+ * from a max of k transactions by summing entries whose respective i and j indexes don't overlap with one another since
+ * only pone piece of stock can be held at once.
+ *
+ * The preprocessing element of the algorithm has a complexity of O(m*n*n)
+ * Using memoization, the recursive aspect of the algorithm has a complexity of O(n*n)
+ *
+ * The total time complexity is of the order O(m*n*n). */
+int task6(vector<vector<int> >& A, int k) {
+    int companies = A.size();
+    int days = A[0].size();
+    vector<vector<int>> trans;
+    /* The 2 dimensional table vector contains pairs storing the max profit for a transaction
+     * started (buy) on day i and finished (sell) on day j as well as the company through which it's generated  */
+    vector<vector<pair<int, int>>> table(days, vector<pair<int, int>>(days,{-1, -1}));
+    for (int i  = days - 1; i > 0; i--){
+        for (int k = i -1; k >= 0; k --){
+            vector<int> tran = {-1,-1,-1,INT_MIN};
+            for (int j  = 0; j < companies; j++){
+                int profit = A[j][i] - A[j][k];
+                // update a transaction covering a given interval if a better transaction covering that interval is found.
+                if ( profit > tran[3]) {
+                    tran[0] = k;
+                    tran[1] = i;
+                    tran[2] = j;
+                    tran[3] = profit;
+                }
+            }
+            trans.push_back(tran);
+            table[tran[0]][tran[1]] = {tran[2], tran[3]};
+        }
+    }
+    // create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
+    vector<vector<vector<int>>>recorded(days , vector<vector<int>>(days, vector<int>(k, -1)));
+    //vector to store transactions
+    int count = 0;
+    int max =  bestProfit(table, recorded, table.size()-1, k, count );
+    return max;
+
+}
+
+
+
+
+
+
 /*This brute force algorithm find the most profitable transaction possible for m companies and their respective stock
  * prices over n days. Given a single transaction only involves one company, the algorithm considers a transaction for each
  * company with a purchase of stock at day x and a sale of said stock at day y, where 0 <= x < y <= n. After finding the
@@ -114,7 +418,7 @@ int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta) {
             delta++;
             return current;
         }
-        // continue with current minimum
+            // continue with current minimum
         else{
             B[i].first = other;
             B[i].second = delta;
@@ -122,7 +426,7 @@ int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta) {
             return other;
         }
     }
-    //if the minimum has already been computed O(1) operation.
+        //if the minimum has already been computed O(1) operation.
     else {
         return B[i].first;
     }
@@ -336,141 +640,6 @@ vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
     return best_transactions;
 }
 
-//int bestProfit(vector<vector<pair<int, int>>>& T, vector<int>& recorded, vector<vector<int>>& optimal, int i, int k ){
-//    if (i == 0 || k == 0 ){
-//        return 0;
-//    }
-//    else if (recorded[i] != -1){
-//        return max(recorded[i], bestProfit(T, recorded, optimal, i - 1, k));
-//    }
-//    else {
-//        int maxProfit = 0;
-//        optimal.push_back({-1,-1,-1});
-//        for (int j = i - 1; j >= 0; j--) {
-//            int profit = T[j][i].second + bestProfit(T, recorded,optimal,  j, k - 1);
-//            if (profit > maxProfit) {
-//                maxProfit = profit;
-//                optimal[optimal.size()-1][0] = j;
-//                optimal[optimal.size()-1][1] = i;
-//                optimal[optimal.size()-1][2] = T[j][i].first;
-//            }
-//        }
-//        recorded[i] = maxProfit; // record the maximum profit of a transaction with a sell day of i
-//        int next = bestProfit(T, recorded, optimal, i - 1, k); // calculate the maximum profit of a transaction with a sell day of i -1
-//
-//        if (maxProfit <= next){
-//            optimal.pop_back();
-//            return next;
-//        }
-//        else{
-//            return maxProfit;
-//        }
-//    }
-//}
-int bestProfit(vector<vector<pair<int, int>>>& T, vector<vector<vector<int>>> & recorded, int i, int k, int &count ){
-    if (i == 0 || k == 0 ){
-        return 0;
-    }
-    else {
-
-        int maxProfit = INT_MIN;
-        for (int j = i - 1; j >= 0; j--) {
-            if (i == 2 && j  == 1){
-                cout << "stop";
-            }
-            count++;
-            int profit = INT_MIN;
-            if (recorded[j][i][k-1] != -1){
-                profit =  recorded[j][i][k-1];
-            }
-            else {
-                profit = T[j][i].second + bestProfit(T, recorded, j, k - 1, count );
-                recorded[j][i][k-1] = profit;
-            }
-            if (profit > maxProfit) {
-                maxProfit = profit;
-            }
-        }
-        // record the maximum profit of a transaction with a sell day of i
-        return max(maxProfit, bestProfit(T, recorded, i-1, k, count));
-    }
-}
-/* /*The algorithm below finds the most profitable combination of at most k transactions for m companies and their respective
- * stock prices over n days using a dynamic programming approach that incorporates both bottom up and top down techniques.
- * The algorithm first computes an nxn table and stores for each entry [i][j] the most profitable transaction starting at day i and
- * ending at day j (where i < j). It then uses recursion to traverse the nxn array to find the maximum profit possible
- * from a max of k transactions by summing entries whose respective i and j indexes don't overlap with one another since
- * only pone piece of stock can be held at once.
- *
- * The preprocessing element of the algorithm has a complexity of O(m*n*n)
- * Using memoization, the recursive aspect of the algorithm has a complexity of O(n*n)
- *
- * The total time complexity is of the order O(m*n*n). */
-int task6(vector<vector<int> >& A, int k) {
-    int companies = A.size();
-    int days = A[0].size();
-    vector<vector<int>> trans;
-    /* The 2 dimensional table vector contains pairs storing the max profit for a transaction
-     * started (buy) on day i and finished (sell) on day j as well as the company through which it's generated  */
-    vector<vector<pair<int, int>>> table(days, vector<pair<int, int>>(days,{-1, -1}));
-    for (int i  = days - 1; i > 0; i--){
-        for (int k = i -1; k >= 0; k --){
-            vector<int> tran = {-1,-1,-1,INT_MIN};
-            for (int j  = 0; j < companies; j++){
-                int profit = A[j][i] - A[j][k];
-                // update a transaction covering a given interval if a better transaction covering that interval is found.
-                if ( profit > tran[3]) {
-                    tran[0] = k;
-                    tran[1] = i;
-                    tran[2] = j;
-                    tran[3] = profit;
-                }
-            }
-            trans.push_back(tran);
-            table[tran[0]][tran[1]] = {tran[2], tran[3]};
-        }
-    }
-
-    for (int x = 0; x < trans.size(); x++) {
-        cout << "Buy: " << trans[x][0] << " | Sell: " << trans[x][1] <<  " | Company: " << trans[x][2] <<  " | Profit:" << trans[x][3];
-        cout << endl;
-    }
-    cout << endl;
-
-
-    for (int x = 0; x < table.size(); x++) {
-        for (int y  = 0; y < table[0].size(); y++  ) {
-            cout << "( " << table[x][y].first << ", " << table[x][y].second << " )";
-        }
-        cout << endl;
-    }
-    cout << endl;
-
-    // create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
-    vector<vector<vector<int>>>recorded(days , vector<vector<int>>(days, vector<int>(k, -1)));
-    //vector to store transactions
-    int count = 0;
-    int max =  bestProfit(table, recorded, table.size()-1, k, count );
-    cout << "count: " << count << endl;
-
-
-//    cout << "table: " << endl;
-//    for (int x = 0; x < recorded.size(); x++) {
-//        for (int y  = 0; y < recorded[0].size(); y++  ) {
-//            cout << recorded[x][y] << ", " ;
-//        }
-//        cout << endl;
-//    }
-    cout << endl;
-    cout << "Max Profit: " << max << endl;
-
-    return max;
-
-
-
-}
-
-
 void Plot1() {
 
     vector<int> days = {1000, 2000, 3000, 4000, 5000};
@@ -582,181 +751,86 @@ void Plot2() {
 }
 
 
-bool Equal(vector<int>& A, vector<int>& B){
-    if (A.size() != B.size()){
-        return false;
-    }
-
-    for (int i = 0; i < A.size(); i++){
-        if (A[i] != B[i]) {return false;}
-    }
-
-    return true;
-}
-
-
-
-int main() {
-    //vector<vector<int>> A = {{1, 9, 8 ,7,6}, {10, 6, 5 ,2, 1} };
-//    vector<vector<int>> A(10, vector<int>(10));
-//    for (int i = 0; i < 10; i++) {
-//        for (int j = 0; j < A.size(); j++) {
-//            for (int k = 0; k < A[0].size(); k++) {
-//                A[j][k] = rand() % 10;
-//            }
-//        }
-//        // Formatting for the Matrix for readability
-//        cout << "  ";
-//        for(int i = 0; i < A.size();i++){
-//            cout << " " << "\033[4m" << i << "\033[0m";
-//        }
-//        cout << endl;
-//        for (int i = 0; i < A.size(); i++) {
-//            cout << i << "| ";
-//            for (int j = 0; j < A[0].size(); j++) {
-//                cout << A[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//        cout << endl;
-//        task6(A, 2);
-//        cout << endl;
-//        vector<vector<int>> task4Result = task4K2(A);
-//        vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
-//        int profit = 0;
-//        cout << "Task 4K2 Result: " << endl;
-//        for (int l = 0; l < task4Result.size(); l++) {
-//            cout << "Transaction " << l + 1 << ": Stock: " << task4Result[l][0] << " | BuyDay: " << task4Result[l][1] << " | SellDay:"
-//                 << task4Result[l][2] << endl;
-//            int stock = task4bResult[l][0];
-//            int buyDay = task4bResult[l][1];
-//            int sellDay = task4bResult[l][2];
-//            profit += A[stock][sellDay] - A[stock][buyDay];
-//        }
-//        cout << "Profit: " << profit << endl;
-//        cout << endl;
-//        cout << "Task 4AnyK Result: " << endl;
-//        profit = 0;
-//        for (int l = 0; l < task4bResult.size(); l++) {
-//            cout << "Transaction: " << l + 1 << ": Stock: " << task4bResult[l][0] << " | BuyDay: " << task4bResult[l][1] << " | SellDay:"
-//                 << task4bResult[l][2] << endl;
-//            int stock = task4bResult[l][0];
-//            int buyDay = task4bResult[l][1];
-//            int sellDay = task4bResult[l][2];
-//            profit += A[stock][sellDay] - A[stock][buyDay];
-//        }
-//        cout << "Profit: " << profit << endl;
-//        cout << "-----------------------------------------------------------------------" << endl;
-//    }
-
-    vector<vector<int>> A = {{3 ,1,5,4 }, {9,8,10 ,4 }, {9,12,7 ,1 }, {6,5,13 ,1} };
-    task6(A,2);
-
-
-    return 0;
-}
-
-
-vector<vector<int>> findIndices( vector<vector<int>>& T){
-    int maxProfit = T[T.size() - 2][T.size() - 2];
-    int colMax = T[T.size() - 2][T.size() - 2];
-    int col = T[0].size() - 1;
-    int currMax = T[T.size() - 2][T.size() - 2];
-    int check = T[0].size() - 1;
-
-    vector<pair<int, int>> Maxes;
-    for(int i =  T[0].size() - 1;  i >= 0; i--) {
-        col = i;
-        for (int j = i - 1; j >= 0; j--) {
-            // if there's a change in the current max register the index at which the change happened
-            if (T[i][2] != currMax) {
-                check = j + 1;
-                // if there's a new current max
-                if ( T[i][2] > currMax) {
-                    currMax = T[i][2];
-                }
-            }
-        }
-        if( currMax > maxProfit ){
-            maxProfit = currMax;
-            col = i;
-            //clear transactions
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-//    vector<vector<int>> A(4, vector<int>(5));
-//    for (int i = 0; i < 1000; i++) {
-//        for (int j = 0; j < A.size(); j++) {
-//            for (int k = 0; k < A[0].size(); k++) {
-//                A[j][k] = rand() % 1000;
-//            }
-//        }
-//        vector<int> task1Result = task1(A);
-//        vector<int> task2Result = task2(A);
-//        vector<int> task3aResult = task3A(A);
-//        vector<int> task3bResult = task3B(A);
-//        if (!Equal(task1Result, task2Result) || !Equal(task1Result, task3aResult) ){
-//            for (int x = 0; x < A.size(); x++) {
-//                for (int y = 0; y < A[0].size(); y++) {
-//                    cout << A[x][y] << " ";
-//                }
-//                cout << endl;
-//            }
-//            cout << endl;
-//
-//            cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
-//
-//            cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
-//
-//            cout << "Task 3a Result: " << task3aResult[0] << " " << task3aResult[1] << " " << task3aResult[2] << endl;
-//
-//            cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
-//
-//            cout << endl;
-//        }
-//        else {
-//            cout << "Passed Test #" << i << endl;
-//        }
-//
-//
-//
-//
-//    }
-
-
-
-//    vector<vector<int>> A = {{5,1,3,9,7}};
-//    for (int i = 0; i < A.size(); i++) {
-//        for (int j = 0; j < A[i].size(); j++) {
-//            cout << A[i][j] << " ";
-//        }
+//    for (int x = 0; x < trans.size(); x++) {
+//        cout << "Buy: " << trans[x][0] << " | Sell: " << trans[x][1] <<  " | Company: " << trans[x][2] <<  " | Profit:" << trans[x][3];
 //        cout << endl;
 //    }
-//
-//    vector<int> task1Result = task1(A);
-//
-//    cout << "Task 1 Result: " << task1Result[0] << " " << task1Result[1] << " " << task1Result[2] << endl;
-//
-//    vector<int> task2Result = task2(A);
-//
-//    cout << "Task 2 Result: " << task2Result[0] << " " << task2Result[1] << " " << task2Result[2] << endl;
-//
-//    vector<int> task3aResult = task3A(A);
-//
-//    cout << "Task 3a Result: " << task3aResult[0] << " " << task3aResult[1] << " " << task3aResult[2] << endl;
-//
-//    vector<int> task3bResult = task3B(A);
-//
-//
-//    cout << "Task 3b Result: " << task3bResult[0] << " " << task3bResult[1] << " " << task3bResult[2] << endl;
 //    cout << endl;
+//
+//
+//    for (int x = 0; x < table.size(); x++) {
+//        for (int y  = 0; y < table[0].size(); y++  ) {
+//            cout << "( " << table[x][y].first << ", " << table[x][y].second << " )";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
+
+// create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
+//vector<vector<vector<int>>>recorded(days , vector<vector<int>>(days, vector<int>(k, -1)));
+//vector to store transactions
+//    cout << "count: " << count << endl;
+
+
+//    cout << "table: " << endl;
+//    for (int x = 0; x < recorded.size(); x++) {
+//        for (int y  = 0; y < recorded[0].size(); y++  ) {
+//            cout << recorded[x][y] << ", " ;
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
+//cout << "Max Profit: " << max << endl;
+
+vector<pair<int, int>> maxesK;
+//    int currMax = INT_MIN;
+//    int max = INT_MIN;
+//    int day = -1;
+//    int company = -1;
+//    int considerBefore = T[0].size();
+//    for (int tran = k -1; tran >= 0; tran--) {
+//        for (int i = 0; i < T.size(); i++) {
+//            for (int j = 0; j < considerBefore; j++) {
+//               if (T[i][j][tran] > max){
+//                   max = T[i][j][tran];
+//                   day = j;
+//                   company = i;
+//               }
+//            }
+//        }
+//
+//        if (max > 0) {
+//            maxesK.push_back({day, company});
+//        }
+//        considerBefore = day;
+//        max = INT_MIN;
+//    }
+//
+//
+//    for (int i = 0; i < maxesK.size(); i++){
+//        cout << "(" << maxesK[i].first << ", " << maxesK[i].second <<  ")" << endl;
+//    }
+//
+//    vector<vector<int>> transactions;
+//
+//    for (int i = maxesK.size() - 1; i >= 0; i--) {
+//        int lookUntil;
+//        if (i == maxesK.size() - 1) {
+//            lookUntil = 0;
+//        } else {
+//            lookUntil = maxesK[i + 1].first;
+//        }
+//        int min = INT_MAX;
+//        int buy = -1;
+//        for (int j = maxesK[i].first - 1; j >= lookUntil; j--) {
+//            if (A[maxesK[i].second][j] < min) {
+//                min = A[maxesK[i].second][j];
+//                buy = j;
+//            }
+//        }
+//        transactions.push_back({ maxesK[i].second, buy, maxesK[i].first});
+//    }
+//
+//    for (int i = 0; i < transactions.size(); i++){
+//        cout << transactions[i][0] << " " << transactions[i][1] << " " << transactions[i][2] << endl;
+//    }
