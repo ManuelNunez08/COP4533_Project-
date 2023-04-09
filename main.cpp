@@ -90,7 +90,7 @@ int main() {
 
     vector<string> test = {"4", "6"};
     testProblem2(5, 3, 3, test);
-    vector<vector<int>> A  = {{8 ,7 ,7, 4, 4} , {9, 1, 5, 5, 5 }, {8, 2, 9, 8, 2 },};
+    vector<vector<int>> A  = {{8 ,7 ,7, 4, 4} , {9, 1, 5, 5, 5 }, {8, 2, 9, 8, 2 }};
     vector<vector<int>> task6Result = task6New(A, 3);
     int profit = 0;
     for (int l = 0; l < task6Result.size(); l++) {
@@ -234,83 +234,6 @@ vector<vector<int>> task6New(vector<vector<int>>& A, int k){
 
 }
 
-
-int bestProfit(vector<vector<pair<int, int>>>& T, vector<vector<vector<int>>> & recorded, int i, int k, int &count ){
-    if (i == 0 || k == 0 ){
-        return 0;
-    }
-    else {
-
-        int maxProfit = INT_MIN;
-        for (int j = i - 1; j >= 0; j--) {
-            count++;
-            int profit = INT_MIN;
-            if (recorded[j][i][k-1] != -1){
-                profit =  recorded[j][i][k-1];
-            }
-            else {
-                profit = T[j][i].second + bestProfit(T, recorded, j, k - 1, count );
-                recorded[j][i][k-1] = profit;
-            }
-            if (profit > maxProfit) {
-                maxProfit = profit;
-            }
-        }
-        // record the maximum profit of a transaction with a sell day of i
-        return max(maxProfit, bestProfit(T, recorded, i-1, k, count));
-    }
-}
-
-
-/* /*The algorithm below finds the most profitable combination of at most k transactions for m companies and their respective
- * stock prices over n days using a dynamic programming approach that incorporates both bottom up and top down techniques.
- * The algorithm first computes an nxn table and stores for each entry [i][j] the most profitable transaction starting at day i and
- * ending at day j (where i < j). It then uses recursion to traverse the nxn array to find the maximum profit possible
- * from a max of k transactions by summing entries whose respective i and j indexes don't overlap with one another since
- * only pone piece of stock can be held at once.
- *
- * The preprocessing element of the algorithm has a complexity of O(m*n*n)
- * Using memoization, the recursive aspect of the algorithm has a complexity of O(n*n)
- *
- * The total time complexity is of the order O(m*n*n). */
-int task6(vector<vector<int> >& A, int k) {
-    int companies = A.size();
-    int days = A[0].size();
-    vector<vector<int>> trans;
-    /* The 2 dimensional table vector contains pairs storing the max profit for a transaction
-     * started (buy) on day i and finished (sell) on day j as well as the company through which it's generated  */
-    vector<vector<pair<int, int>>> table(days, vector<pair<int, int>>(days,{-1, -1}));
-    for (int i  = days - 1; i > 0; i--){
-        for (int k = i -1; k >= 0; k --){
-            vector<int> tran = {-1,-1,-1,INT_MIN};
-            for (int j  = 0; j < companies; j++){
-                int profit = A[j][i] - A[j][k];
-                // update a transaction covering a given interval if a better transaction covering that interval is found.
-                if ( profit > tran[3]) {
-                    tran[0] = k;
-                    tran[1] = i;
-                    tran[2] = j;
-                    tran[3] = profit;
-                }
-            }
-            trans.push_back(tran);
-            table[tran[0]][tran[1]] = {tran[2], tran[3]};
-        }
-    }
-    // create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
-    vector<vector<vector<int>>>recorded(days , vector<vector<int>>(days, vector<int>(k, -1)));
-    //vector to store transactions
-    int count = 0;
-    int max =  bestProfit(table, recorded, table.size()-1, k, count );
-    return max;
-
-}
-
-
-
-
-
-
 /*This brute force algorithm find the most profitable transaction possible for m companies and their respective stock
  * prices over n days. Given a single transaction only involves one company, the algorithm considers a transaction for each
  * company with a purchase of stock at day x and a sale of said stock at day y, where 0 <= x < y <= n. After finding the
@@ -327,7 +250,7 @@ vector<int> task1(vector<vector<int>>& A) {
     //for every company
     for (int i = 0; i < m; i++) {
         // for every day
-        for (int j = 0; j < n; j++) {
+        for (int j = 0; j < n-1; j++) {
             // for every possible day of sale after the day i being considered
             for (int k = j + 1; k < n; k++) {
                 int profit = A[i][k] - A[i][j];
@@ -356,9 +279,6 @@ vector<int> task2(vector<vector<int>>& A) {
     int m = A.size();
     int n = A[0].size();
     int maxProfit = INT_MIN;
-    int stockIndex = 0;
-    int buyDay = 0;
-    int sellDay = 0;
     vector<int> best_transaction(3);
 
     for (int i = 0; i < m; i++) { // Iterating through each stock
@@ -370,9 +290,9 @@ vector<int> task2(vector<vector<int>>& A) {
             int profit = A[i][j] - minPrice;
             if (profit > maxProfit) { // If the profit is greater than the max profit, this is the new transaction
                 maxProfit = profit;
-                stockIndex = i;
-                buyDay = minDay;
-                sellDay = j;
+                best_transaction[0] = i;
+                best_transaction[1] = minDay;
+                best_transaction[2] = j;
             }
             if (A[i][j] < minPrice) { // Checking for a new buy day
                 minPrice = A[i][j];
@@ -380,9 +300,6 @@ vector<int> task2(vector<vector<int>>& A) {
             }
         }
     }
-    best_transaction[0] = stockIndex;
-    best_transaction[1] = buyDay;
-    best_transaction[2] = sellDay;
     return best_transaction;
 }
 
@@ -612,7 +529,7 @@ vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
     vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
 
     for (int i = 0; i < m; i++) { // Stock loop for transactions
-        for (int j = startCol; j < n; j++) { // Buyday loop for transactions
+        for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
             for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
                 if(k > 1){
                     tempBest_transactions = task4AnyK(A, k-1, l);
@@ -782,7 +699,7 @@ void Plot2() {
 //    cout << endl;
 //cout << "Max Profit: " << max << endl;
 
-vector<pair<int, int>> maxesK;
+// vector<pair<int, int>> maxesK;
 //    int currMax = INT_MIN;
 //    int max = INT_MIN;
 //    int day = -1;
