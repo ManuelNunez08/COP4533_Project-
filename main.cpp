@@ -88,19 +88,103 @@ void testProblem2(int days, int companies, int k,vector<string>& methods);
 
 int main() {
 
-    vector<string> test = {"4", "6"};
-    testProblem2(5, 3, 3, test);
-    vector<vector<int>> A  = {{8 ,7 ,7, 4, 4} , {9, 1, 5, 5, 5 }, {8, 2, 9, 8, 2 }};
-    vector<vector<int>> task6Result = task6New(A, 3);
-    int profit = 0;
-    for (int l = 0; l < task6Result.size(); l++) {
-        int stock = task6Result[l][0];
-        int buyDay = task6Result[l][1];
-        int sellDay = task6Result[l][2];
-        cout << stock << " " << buyDay << " " << sellDay << endl;
-        profit += A[stock][sellDay] - A[stock][buyDay];
+//    vector<string> test = {"4", "6"};
+//    testProblem2(5, 3, 3, test);
+//    vector<vector<int>> A  = {{1, 5 , 10}};
+//    // vector<vector<int>> A  = {{8 ,7 ,7, 4, 4} , {9, 1, 5, 5, 5 }, {8, 2, 9, 8, 2 }};
+//    vector<int> task1Result = task1(A);
+//    vector<vector<int>> task6Result = task6New(A, 3);
+//    int profit = 0;
+//    for (int l = 0; l < task6Result.size(); l++) {
+//        int stock = task6Result[l][0];
+//        int buyDay = task6Result[l][1];
+//        int sellDay = task6Result[l][2];
+//        cout << stock << " " << buyDay << " " << sellDay << endl;
+//        profit += A[stock][sellDay] - A[stock][buyDay];
+//    }
+//    cout << "Profit: " << profit << endl;
+
+
+
+    //vector<vector<int>> A = {{1, 9, 8, 7, 6}, {10, 6, 5, 2, 1}};
+    vector<vector<int>> A(5, vector<int>(5));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10;
+            }
+        }
+        // Formatting for the Matrix for readability
+        cout << "  ";
+        for(int i = 0; i < A.size();i++){
+            cout << " " << "\033[4m" << i << "\033[0m";
+        }
+        cout << endl;
+        for (int i = 0; i < A.size(); i++) {
+            cout << i << "| ";
+            for (int j = 0; j < A[0].size(); j++) {
+                cout << A[i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+        //task6(A, 2);
+        cout << endl;
+        vector<int> task1Result = task1(A);
+        vector<int> task2Result = task2(A);
+        vector<vector<int>> task4Result = task4K2(A);
+        vector<vector<int>> task4bResult = task4AnyK(A, 2, 0);
+
+        int profit = 0;
+
+        cout << "Task 1 Result: " << endl;
+        cout << "Stock: " << task1Result[0] << " | BuyDay: " << task1Result[1] << " | SellDay:"
+             << task1Result[2] << endl;
+        int stock = task1Result[0];
+        int buyDay = task1Result[1];
+        int sellDay = task1Result[2];
+        profit = A[stock][sellDay] - A[stock][buyDay];
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+
+        cout << "Task 2 Result: " << endl;
+        cout << "Stock: " << task2Result[0] << " | BuyDay: " << task2Result[1] << " | SellDay:"
+             << task2Result[2] << endl;
+        stock = task2Result[0];
+        buyDay = task2Result[1];
+        sellDay = task2Result[2];
+        profit = A[stock][sellDay] - A[stock][buyDay];
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+
+        cout << "Task 4K2 Result: " << endl;
+        for (int l = 0; l < task4Result.size(); l++) {
+            cout << "Transaction " << l + 1 << ": Stock: " << task4Result[l][0] << " | BuyDay: " << task4Result[l][1] << " | SellDay:"
+                 << task4Result[l][2] << endl;
+            int stock = task4bResult[l][0];
+            int buyDay = task4bResult[l][1];
+            int sellDay = task4bResult[l][2];
+            profit += A[stock][sellDay] - A[stock][buyDay];
+        }
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+        cout << "Task 4AnyK Result: " << endl;
+        for (int l = 0; l < task4bResult.size(); l++) {
+            cout << "Transaction: " << l + 1 << ": Stock: " << task4bResult[l][0] << " | BuyDay: " << task4bResult[l][1] << " | SellDay:"
+                 << task4bResult[l][2] << endl;
+            int stock = task4bResult[l][0];
+            int buyDay = task4bResult[l][1];
+            int sellDay = task4bResult[l][2];
+            profit += A[stock][sellDay] - A[stock][buyDay];
+        }
+        cout << "Profit: " << profit << endl;
+        cout << "-----------------------------------------------------------------------" << endl;
     }
-    cout << "Profit: " << profit << endl;
+
+
     return 0;
 }
 
