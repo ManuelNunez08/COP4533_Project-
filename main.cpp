@@ -24,8 +24,7 @@ void Plot2();
 
 
 //task 4 functions
-vector<vector<int>> task4K2(vector<vector<int> >& A);
-vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol);
+vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol);
 
 
 //task 6 functions
@@ -34,31 +33,22 @@ int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vect
 vector<vector<int>> task6(vector<vector<int> >& A, int k);
 
 //time complexity analysis for tasks 4-6
-
+void Plot3();
+void Plot4();
+void Plot5();
 
 //helper/testing functions
-bool Equal(vector<int>& A, vector<int>& B);
-void testProblem2(int days, int companies, int k,vector<string>& methods);
+void testProblem2(int days, int companies, int k,int numTests);
+void testProblem1(int days, int companies, int numTests);
+
 
 int main() {
-
-    vector<string> test2 = {"4","6"};
-    testProblem2(5,3,2,test2);
-
+//    testProblem1(10,10,25);
+//    testProblem2(10,10,4,25);
+    Plot3();
     return 0;
 }
 
-bool Equal(vector<int>& A, vector<int>& B){
-    if (A.size() != B.size()){
-        return false;
-    }
-
-    for (int i = 0; i < A.size(); i++){
-        if (A[i] != B[i]) {return false;}
-    }
-
-    return true;
-}
 
 
 vector<vector<int>> findIndices( vector<vector<vector<pair<int,int>>>>& T, vector<vector<int>>& A,vector<vector<int>>& transactions, int k, int startDay, int lastDay, int lastCompany){
@@ -146,95 +136,13 @@ int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vect
 }
 
 vector<vector<int>> task6(vector<vector<int>>& A, int k){
+    //create memoization table and call recursive function
     vector<vector<vector<pair<int,int>>>>recorded(A.size() , vector<vector<pair<int,int>>>(A[0].size(), vector<pair<int,int>>(k, {-1,-1})));
     pair<int, int> holding = {-1, -1};
-
-    int max  = findBest(A, holding, recorded,  A[0].size() - 1, k);
-    for (int i = 0; i < recorded.size(); i++) {
-        for (int j = 0; j < recorded[0].size(); j++) {
-            cout << "(";
-            for (int k = 0; k < recorded[0][0].size(); k++) {
-                cout << "(" << recorded[i][j][k].first << ", " << recorded[i][j][k].second << ")";
-            }
-            cout << ")      ";
-        }
-        cout << endl;
-    }
-    cout << "Task 6 profit :" << max << endl;
+    findBest(A, holding, recorded,A[0].size() - 1, k);
     vector<vector<int>> transactions;
     return findIndices(recorded,A,transactions, k,A[0].size()-1,-1,-1);
 }
-
-
-
-
-
-
-
-
-
-void testProblem2(int days, int companies, int k, vector<string>& methods){
-    vector<vector<int>> A(companies, vector<int>(days));
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < companies; j++) {
-            for (int k = 0; k < days; k++) {
-                A[j][k] = rand() % 10;
-            }
-        }
-//        // Formatting for the Matrix for readability
-//        cout << "  ";
-//        for(int i = 0; i < days;i++){
-//            cout << " " << "\033[4m" << i << "\033[0m";
-//        }
-//        cout << endl;
-//        for (int i = 0; i < companies; i++) {
-//            cout << i << "| ";
-//            for (int j = 0; j < days; j++) {
-//                cout << A[i][j] << " ";
-//            }
-//            cout << endl;
-//        }
-//        cout << endl;
-//        cout << endl;
-
-        if (methods.begin(), methods.end(), "4") {
-            vector<vector<int>> task4bResult = task4AnyK(A, k, 0);
-            int profit = 0;
-            cout << endl;
-            cout << "Task 4 Result: " << endl;
-            for (int l = 0; l < task4bResult.size(); l++) {
-                int stock = task4bResult[l][0];
-                int buyDay = task4bResult[l][1];
-                int sellDay = task4bResult[l][2];
-                cout << stock << " " << buyDay << " " << sellDay << endl;
-                profit += A[stock][sellDay] - A[stock][buyDay];
-            }
-            cout << "Profit: " << profit << endl << endl;
-        }
-
-        if (methods.begin(), methods.end(), "6") {
-            vector<vector<int>> task6Result = task6(A, k);
-            cout << endl;
-            cout << "Task 6 Result: " << endl;
-            int profit = 0;
-            for (int l = 0; l < task6Result.size(); l++) {
-                int stock = task6Result[l][0];
-                int buyDay = task6Result[l][1];
-                int sellDay = task6Result[l][2];
-                cout << stock << " " << buyDay << " " << sellDay << endl;
-                profit += A[stock][sellDay] - A[stock][buyDay];
-            }
-            cout << "Profit: " << profit << endl;
-        }
-
-        cout << "-----------------------------------------------------------------------" << endl;
-    }
-}
-
-
-
-
-
 
 
 
@@ -484,51 +392,12 @@ vector<int> task3B(vector<vector<int> >& A) {
     best_transaction[2] = sellDay;
     return best_transaction;
 }
-vector<vector<int>> task4K2(vector<vector<int> >& A) {
-    int m = A.size();
-    int n = A[0].size();
-    int max_profit = 0;
-    vector<vector<int>> best_transactions(2,vector<int>(3, -1)); // best_transactions 2d array with k transactions.
 
-    // ATTEMPT AT K=2
-    for (int i = 0; i < m; i++) { // Stock loop for FIRST transaction
-        for (int j = 0; j < n; j++) { // Buyday loop for FIRST transaction
-            for (int k = j + 1; k < n; k++) { // SellDay loop for FIRST transaction
-                for(int z = 0; z < m; z++) { // Stock loop for SECOND transaction
-                    for (int l = k; l < n; l++) { //Buy day loop for SECOND transaction
-                        for (int o = l + 1; o < n; o++) { // SellDay loop for SECOND transaction
-                            int profit1 = A[i][k] - A[i][j]; // Transaction 1: i j k
-                            int profit2 = A[z][o] - A[z][l]; // Transaction 2: z l o
-                            int total_profit = profit1 + profit2;
-                            if (total_profit > max_profit) {
-                                max_profit = total_profit;
-                                best_transactions[0][0] = i;
-                                best_transactions[0][1] = j;
-                                best_transactions[0][2] = k;
-                                best_transactions[1][0] = z;
-                                best_transactions[1][1] = l;
-                                best_transactions[1][2] = o;
-                            }
-                        }
-                    }
-                }
-                int profit4 = A[i][k] - A[i][j]; // Transaction 1: i j k
-                // One transaction
-                if (profit4 > max_profit) {
-                    max_profit = profit4;
-                    best_transactions[0][0] = i;
-                    best_transactions[0][1] = j;
-                    best_transactions[0][2] = k;
-                    best_transactions[1][0] = -1;
-                    best_transactions[1][1] = -1;
-                    best_transactions[1][2] = -1;
-                }
-            }
-        }
-    }
-    return best_transactions;
-}
-vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
+
+
+
+
+vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol) {
     int m = A.size();
     int n = A[0].size();
     int max_profit = 0;
@@ -539,7 +408,7 @@ vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
         for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
             for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
                 if(k > 1){
-                    tempBest_transactions = task4AnyK(A, k-1, l);
+                    tempBest_transactions = task4(A, k-1, l);
                 }
                 int profit1 = A[i][l] - A[i][j]; // Transaction 1: Stock: i BuyDay: j SellDay: l
                 int profit2 = 0; // Max profit from the best transactions from the recursive call;
@@ -567,13 +436,12 @@ vector<vector<int>> task4AnyK(vector<vector<int>>& A, int k, int startCol) {
 void Plot1() {
 
     vector<int> days = {1000, 2000, 3000, 4000, 5000};
-    vector<int> companies = {1000, 2000, 3000, 4000, 5000};
 
-    //PLOT 1: variable days (n) and fixed companies(m = 2000)
+    //PLOT 1: variable days (n) and fixed companies(m = 1000)
     vector<vector<int>> Plot1 (days.size(), vector<int>(4));
     for (int i = 0; i < days.size(); i++ ){
         int numDays = days[i];
-        vector<vector<int>> A(2000, vector<int>(numDays));
+        vector<vector<int>> A(1000, vector<int>(numDays));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -621,14 +489,13 @@ void Plot1() {
 
 void Plot2() {
 
-    vector<int> days = {1000, 2000, 3000, 4000, 5000};
     vector<int> companies = {1000, 2000, 3000, 4000, 5000};
 
-    //PLOT 2: fixed days (n = 2000) and variable companies
+    //PLOT 2: fixed days (n = 1000) and variable companies
     vector<vector<int>> Plot2 (companies.size(), vector<int>(4));
     for (int i = 0; i < companies.size(); i++ ){
         int numCompanies = companies[i];
-        vector<vector<int>> A(numCompanies, vector<int>(2000));
+        vector<vector<int>> A(numCompanies, vector<int>(1000));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -674,87 +541,237 @@ void Plot2() {
 
 }
 
+void Plot3() {
 
-//    for (int x = 0; x < trans.size(); x++) {
-//        cout << "Buy: " << trans[x][0] << " | Sell: " << trans[x][1] <<  " | Company: " << trans[x][2] <<  " | Profit:" << trans[x][3];
-//        cout << endl;
-//    }
-//    cout << endl;
-//
-//
-//    for (int x = 0; x < table.size(); x++) {
-//        for (int y  = 0; y < table[0].size(); y++  ) {
-//            cout << "( " << table[x][y].first << ", " << table[x][y].second << " )";
-//        }
-//        cout << endl;
-//    }
-//    cout << endl;
+    vector<int> days = {10, 20, 30, 40, 50};
 
-// create a vector to store computed recursive values. Memoization is incorporated into the solution through this vector.
-//vector<vector<vector<int>>>recorded(days , vector<vector<int>>(days, vector<int>(k, -1)));
-//vector to store transactions
-//    cout << "count: " << count << endl;
+    //PLOT 3: variable days (n) and fixed companies and transactions(m = 50, k = 5)
+    int k = 5;
+    vector<vector<int>> Plot1 (days.size(), vector<int>(3));
+    for (int i = 0; i < days.size(); i++ ){
+        int numDays = days[i];
+        vector<vector<int>> A(50, vector<int>(numDays));
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10000;
+            }
+        }
+
+        //Task 4
+        auto startTask4 = high_resolution_clock::now();
+        task4(A,k,0);
+        auto stopTask4 = high_resolution_clock::now();
+        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+        Plot1[i][0] = durationTask4.count();
+
+        //Task 5
+//        auto startTask5 = high_resolution_clock::now();
+//        task5(A,k);
+//        auto stopTask5 = high_resolution_clock::now();
+//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+//        Plot1[i][1] = durationTask5.count();
 
 
-//    cout << "table: " << endl;
-//    for (int x = 0; x < recorded.size(); x++) {
-//        for (int y  = 0; y < recorded[0].size(); y++  ) {
-//            cout << recorded[x][y] << ", " ;
-//        }
-//        cout << endl;
-//    }
-//    cout << endl;
-//cout << "Max Profit: " << max << endl;
+        //Task 6
+//        auto startTask6 = high_resolution_clock::now();
+//        task6(A,k);
+//        auto stopTask6 = high_resolution_clock::now();
+//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+//        Plot1[i][2] = durationTask6.count();
 
-// vector<pair<int, int>> maxesK;
-//    int currMax = INT_MIN;
-//    int max = INT_MIN;
-//    int day = -1;
-//    int company = -1;
-//    int considerBefore = T[0].size();
-//    for (int tran = k -1; tran >= 0; tran--) {
-//        for (int i = 0; i < T.size(); i++) {
-//            for (int j = 0; j < considerBefore; j++) {
-//               if (T[i][j][tran] > max){
-//                   max = T[i][j][tran];
-//                   day = j;
-//                   company = i;
-//               }
-//            }
-//        }
-//
-//        if (max > 0) {
-//            maxesK.push_back({day, company});
-//        }
-//        considerBefore = day;
-//        max = INT_MIN;
-//    }
-//
-//
-//    for (int i = 0; i < maxesK.size(); i++){
-//        cout << "(" << maxesK[i].first << ", " << maxesK[i].second <<  ")" << endl;
-//    }
-//
-//    vector<vector<int>> transactions;
-//
-//    for (int i = maxesK.size() - 1; i >= 0; i--) {
-//        int lookUntil;
-//        if (i == maxesK.size() - 1) {
-//            lookUntil = 0;
-//        } else {
-//            lookUntil = maxesK[i + 1].first;
-//        }
-//        int min = INT_MAX;
-//        int buy = -1;
-//        for (int j = maxesK[i].first - 1; j >= lookUntil; j--) {
-//            if (A[maxesK[i].second][j] < min) {
-//                min = A[maxesK[i].second][j];
-//                buy = j;
-//            }
-//        }
-//        transactions.push_back({ maxesK[i].second, buy, maxesK[i].first});
-//    }
-//
-//    for (int i = 0; i < transactions.size(); i++){
-//        cout << transactions[i][0] << " " << transactions[i][1] << " " << transactions[i][2] << endl;
-//    }
+    }
+
+    for (int j = 0; j < Plot1.size(); j++) {
+        for (int k = 0; k <Plot1[0].size(); k++) {
+            cout << Plot1[j][k] << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+
+void Plot4() {
+
+    vector<int> companies = {10, 20, 30, 40, 50};
+
+    //PLOT 1: variable companies(m) and fixed days and transactions(n = 50, k = 5)
+    int k = 5;
+    vector<vector<int>> Plot1 (companies.size(), vector<int>(3));
+    for (int i = 0; i < companies.size(); i++ ){
+        int numCompanies = companies[i];
+        vector<vector<int>> A(numCompanies, vector<int>(50));
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10000;
+            }
+        }
+
+        //Task 4
+//        auto startTask4 = high_resolution_clock::now();
+//        task4(A,k,0);
+//        auto stopTask4 = high_resolution_clock::now();
+//        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+//        Plot1[i][0] = durationTask4.count();
+
+        //Task 5
+//        auto startTask5 = high_resolution_clock::now();
+//        task5(A,k);
+//        auto stopTask5 = high_resolution_clock::now();
+//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+//        Plot1[i][1] = durationTask5.count();
+
+
+        //Task 6
+        auto startTask6 = high_resolution_clock::now();
+        task6(A,k);
+        auto stopTask6 = high_resolution_clock::now();
+        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+        Plot1[i][2] = durationTask6.count();
+
+    }
+
+    for (int j = 0; j < Plot1.size(); j++) {
+        for (int k = 0; k <Plot1[0].size(); k++) {
+            cout << Plot1[j][k] << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+void Plot5() {
+
+    vector<int> ks = {5,10,15,20,25};
+
+    //PLOT 1: variable companies(m) and fixed days and companies(n = 50, m = 50)
+    vector<vector<int>> Plot1 (ks.size(), vector<int>(3));
+    for (int i = 0; i < ks.size(); i++ ){
+        int k = ks[i];
+        vector<vector<int>> A(50, vector<int>(50));
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10000;
+            }
+        }
+
+//        //Task 4
+//        auto startTask4 = high_resolution_clock::now();
+//        task4(A,k,0);
+//        auto stopTask4 = high_resolution_clock::now();
+//        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+//        Plot1[i][0] = durationTask4.count();
+
+        //Task 5
+//        auto startTask5 = high_resolution_clock::now();
+//        task5(A,k);
+//        auto stopTask5 = high_resolution_clock::now();
+//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+//        Plot1[i][1] = durationTask5.count();
+
+
+        //Task 6
+        auto startTask6 = high_resolution_clock::now();
+        task6(A,k);
+        auto stopTask6 = high_resolution_clock::now();
+        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+        Plot1[i][2] = durationTask6.count();
+
+    }
+
+    for (int j = 0; j < Plot1.size(); j++) {
+        for (int k = 0; k <Plot1[0].size(); k++) {
+            cout << Plot1[j][k] << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+void testProblem2(int days, int companies, int k, int numTests){
+    vector<vector<int>> A(companies, vector<int>(days));
+    int passed = 0;
+    for (int i = 0; i < numTests; i++) {
+        for (int j = 0; j < companies; j++) {
+            for (int k = 0; k < days; k++) {
+                A[j][k] = rand() % 10;
+            }
+        }
+        vector<vector<int>> task4bResult = task4(A, k, 0);
+        vector<vector<int>> task6Result = task6(A, k);
+
+        int profit4 = 0;
+        for (int l = 0; l < task4bResult.size(); l++) {
+            int stock = task4bResult[l][0];
+            int buyDay = task4bResult[l][1];
+            int sellDay = task4bResult[l][2];
+            profit4 += A[stock][sellDay] - A[stock][buyDay];
+        }
+
+        int profit6 = 0;
+        for (int l = 0; l < task6Result.size(); l++) {
+            int stock = task6Result[l][0];
+            int buyDay = task6Result[l][1];
+            int sellDay = task6Result[l][2];
+            profit6 += A[stock][sellDay] - A[stock][buyDay];
+        }
+
+
+        if(profit4 != profit6){
+            vector<vector<vector<int>>> trans = {task4bResult, task6Result};
+            cout << "UNEQUAL PROFITS REPORTED: " << endl << endl;
+            cout << "Task 4 Profit: " << profit4 << endl;
+            cout << "Task 6 Profit: " << profit6 << endl;
+            cout << "TRANSACTIONS:" << endl;
+            for (int i = 0; i < trans.size(); i ++) {
+                cout << "Task " << i + 4 << ":" << endl;
+                for (int l = 0; l < trans[i].size(); l++) {
+                    cout << "Stock: " <<  trans[i][l][0] << "| buy:" <<  trans[i][l][1] << "| sell:" << trans[i][l][2] << endl;
+                }
+                cout << endl;
+            }
+            cout << "-----------------------------------------------------------------------" << endl;
+        }
+        else{
+            passed++;
+        }
+    }
+    cout << passed << " Test Passed Out Of " << numTests << " Tested.";
+}
+
+
+void testProblem1(int days, int companies, int numTests){
+    vector<vector<int>> A(companies, vector<int>(days));
+    int passed = 0;
+    for (int i = 0; i < numTests; i++) {
+        for (int j = 0; j < companies; j++) {
+            for (int k = 0; k < days; k++) {
+                A[j][k] = rand() % 10;
+            }
+        }
+        vector<int> t1 = task1(A);
+        vector<int> t2 = task2(A);
+        vector<int> t3 = task3A(A);
+        vector<int> t4 = task3B(A);
+
+        int profit1 = A[t1[0]][t1[2]] - A[t1[0]][t1[2]];
+        int profit2 = A[t2[0]][t2[2]] - A[t2[0]][t2[2]];
+        int profit3 = A[t3[0]][t3[2]] - A[t3[0]][t3[2]];
+        int profit4 = A[t4[0]][t4[2]] - A[t4[0]][t4[2]];
+
+
+        if(profit1 != profit2 || profit1 != profit3 || profit1 != profit4 || profit2 != profit3 || profit2 != profit4 || profit3 != profit4  ){
+            cout << "UNEQUAL PROFITS REPORTED: " << endl << endl;
+            cout << "Task 1 Profit: " << profit1 << endl;
+            cout << "Task 2 Profit: " << profit2 << endl;
+            cout << "Task 3A Profit: " << profit3 << endl;
+            cout << "Task 3B Profit: " << profit4 << endl;
+            cout << "-----------------------------------------------------------------------" << endl;
+        }
+        else{
+            passed++;
+        }
+    }
+    cout << passed << " Test Passed Out Of " << numTests << " Tested.";
+}
+
