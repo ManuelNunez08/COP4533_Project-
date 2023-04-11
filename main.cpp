@@ -26,6 +26,9 @@ void Plot2();
 //task 4 functions
 vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol);
 
+//task 5 functions
+vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol);
+vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vector<vector<pair<int, vector<vector<int>>>>>& memo);
 
 //task 6 functions
 vector<vector<int>> findIndices( vector<vector<vector<pair<int,int>>>>& T, vector<vector<int>>& A,vector<vector<int>>& transactions, int k, int startDay, int lastDay, int lastCompany);
@@ -45,7 +48,136 @@ void testProblem1(int days, int companies, int numTests);
 int main() {
 //    testProblem1(10,10,25);
 //    testProblem2(10,10,4,25);
-    Plot3();
+    //    vector<string> test = {"4", "6"};
+//    testProblem2(5, 3, 3, test);
+//    vector<vector<int>> A  = {{1, 5 , 10}};
+//    // vector<vector<int>> A  = {{8 ,7 ,7, 4, 4} , {9, 1, 5, 5, 5 }, {8, 2, 9, 8, 2 }};
+//    vector<int> task1Result = task1(A);
+//    vector<vector<int>> task6Result = task6New(A, 3);
+//    int profit = 0;
+//    for (int l = 0; l < task6Result.size(); l++) {
+//        int stock = task6Result[l][0];
+//        int buyDay = task6Result[l][1];
+//        int sellDay = task6Result[l][2];
+//        cout << stock << " " << buyDay << " " << sellDay << endl;
+//        profit += A[stock][sellDay] - A[stock][buyDay];
+//    }
+//    cout << "Profit: " << profit << endl;
+
+
+
+
+
+
+
+
+
+    //vector<vector<int>> A = {{8,6,0,2}, {4,8,6,5}};
+    vector<vector<int>> A(10, vector<int>(10));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < A.size(); j++) {
+            for (int k = 0; k < A[0].size(); k++) {
+                A[j][k] = rand() % 10;
+            }
+        }
+        // Formatting for the Matrix for readability
+        cout << "  ";
+        for(int i = 0; i < A[0].size();i++){
+            cout << " " << "\033[4m" << i << "\033[0m";
+        }
+        cout << endl;
+        for (int i = 0; i < A.size(); i++) {
+            cout << i << "| ";
+            for (int j = 0; j < A[0].size(); j++) {
+                cout << A[i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+        //task6(A, 2);
+        cout << endl;
+        vector<int> task1Result = task1(A);
+        vector<int> task2Result = task2(A);
+        //vector<vector<int>> task4Result = task4(A, 2, 0);
+        vector<vector<int>> task5Result = task5(A, 5, 0);
+        vector<vector<int>> task6Result = task6(A, 5);
+
+
+        int profit = 0;
+
+        cout << "Task 1 Result: " << endl;
+        cout << "Stock: " << task1Result[0] << " | BuyDay: " << task1Result[1] << " | SellDay:"
+             << task1Result[2] << endl;
+        int stock = task1Result[0];
+        int buyDay = task1Result[1];
+        int sellDay = task1Result[2];
+        profit = A[stock][sellDay] - A[stock][buyDay];
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+
+        cout << "Task 2 Result: " << endl;
+        cout << "Stock: " << task2Result[0] << " | BuyDay: " << task2Result[1] << " | SellDay:"
+             << task2Result[2] << endl;
+        stock = task2Result[0];
+        buyDay = task2Result[1];
+        sellDay = task2Result[2];
+        profit = A[stock][sellDay] - A[stock][buyDay];
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+
+//        cout << "Task 4 Result: " << endl;
+//        for (int l = 0; l < task4Result.size(); l++) {
+//            cout << "Transaction: " << l + 1 << ": Stock: " << task4Result[l][0] << " | BuyDay: " << task4Result[l][1] << " | SellDay:"
+//                 << task4Result[l][2] << endl;
+//            int stock = task4Result[l][0];
+//            int buyDay = task4Result[l][1];
+//            int sellDay = task4Result[l][2];
+//            profit += A[stock][sellDay] - A[stock][buyDay];
+//        }
+//        cout << "Profit: " << profit << endl;
+//        cout << endl;
+//        profit = 0;
+
+        cout << "Task 5 Result: " << endl;
+        for (int l = 0; l < task5Result.size(); l++) {
+            cout << "Transaction: " << l + 1 << ": Stock: " << task5Result[l][0] << " | BuyDay: " << task5Result[l][1] << " | SellDay:"
+                 << task5Result[l][2] << endl;
+            int stock = task5Result[l][0];
+            int buyDay = task5Result[l][1];
+            int sellDay = task5Result[l][2];
+            profit += A[stock][sellDay] - A[stock][buyDay];
+        }
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+
+        cout << "Task 6 Result: " << endl;
+        for (int l = 0; l < task6Result.size(); l++) {
+            cout << "Transaction: " << l + 1 << ": Stock: " << task6Result[l][0] << " | BuyDay: " << task6Result[l][1] << " | SellDay:"
+                 << task6Result[l][2] << endl;
+            int stock = task6Result[l][0];
+            int buyDay = task6Result[l][1];
+            int sellDay = task6Result[l][2];
+            profit += A[stock][sellDay] - A[stock][buyDay];
+        }
+        cout << "Profit: " << profit << endl;
+        cout << endl;
+        profit = 0;
+
+        cout << "-----------------------------------------------------------------------" << endl;
+    }
+
+
+
+
+
+
+//    Plot3();
+//    Plot4();
+//    Plot5();
+
     return 0;
 }
 
@@ -432,6 +564,111 @@ vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol) {
     }
     return best_transactions;
 }
+vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    // Setting a 3d vector of pairs, where the first value is the max profit that can be achieved by buying a certain stock on a certain day with a certain amount of transactions left.
+    // The second part of the pair is a 2d array with the transactions that make that maximum profit.
+    vector<vector<pair<int, vector<vector<int>>>>> memo(n, vector<pair<int, vector<vector<int>>>>(k, make_pair(INT_MIN, vector<vector<int>>())));
+    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+
+    for (int i = 0; i < m; i++) { // Stock loop for transactions
+        for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
+            for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
+                int profit1 = A[i][l] - A[i][j]; // Transaction 1: Stock: i BuyDay: j SellDay: l
+                int profit2 = 0;
+                if(k > 1) { // If k > 1 we will try to call recursively or obtain already calculated recursive call through memo
+                    if (memo[l][k - 2].first == INT_MIN) { // If we have not calculated this recursive call
+                        tempBest_transactions = task5helper(A, k - 1, l, memo); // Call recursively
+                        for (int z = 0; z < tempBest_transactions.size(); z++) { // Looping through best transactions from recursive call to add their profits
+                            int stock = tempBest_transactions[z][0];
+                            int buyDay = tempBest_transactions[z][1];
+                            int sellDay = tempBest_transactions[z][2];
+                            profit2 += A[stock][sellDay] - A[stock][buyDay];
+                        }
+                    } else if(memo[l][k - 2].first > 0){ // If we already calculated the recursive call
+                        profit2 = memo[l][k - 2].first;
+                        tempBest_transactions = memo[l][k - 2].second;
+                    }
+                } else if (memo[j][k - 1].first < profit1) { // If k = 1, do not call recursively
+                    memo[j][k - 1].first = profit1;
+                    memo[j][k - 1].second = {{i,j,l}};
+                }
+
+                int total_profit = profit1 + profit2; // Add up total profit from recursive call and current call
+                if (total_profit > max_profit) {
+                    max_profit = total_profit;
+                    best_transactions.clear(); // Clears the best transactions 2d array because we found new better transactions
+                    best_transactions.push_back({i,j,l}); // Adding the transaction from this call to the beginning of the best_transactions list;
+
+                    for(int z = 0; z<tempBest_transactions.size(); z++){
+                        best_transactions.push_back(tempBest_transactions[z]);  // Adding the transactions from the recursive call to the best list
+                    }
+
+                    // Adding Best Transactions to Memo
+                    memo[j][k-1].first = max_profit;
+                    memo[j][k-1].second.clear();
+                    memo[j][k-1].second = best_transactions;
+                }
+            }
+        }
+    }
+    return best_transactions;
+}
+
+
+vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vector<vector<pair<int, vector<vector<int>>>>>& memo) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+
+    for (int i = 0; i < m; i++) { // Stock loop for transactions
+        for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
+            for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
+                int profit1 = A[i][l] - A[i][j]; // Transaction 1: Stock: i BuyDay: j SellDay: l
+                int profit2 = 0;
+                if(k > 1) { // If k > 1 we will try to call recursively or obtain already calculated recursive call through memo
+                    if (memo[l][k - 2].first == INT_MIN) { // If we have not calculated this recursive call
+                        tempBest_transactions = task5helper(A, k - 1, l, memo); // Call recursively
+                        for (int z = 0; z < tempBest_transactions.size(); z++) { // Looping through best transactions from recursive call to add their profits
+                            int stock = tempBest_transactions[z][0];
+                            int buyDay = tempBest_transactions[z][1];
+                            int sellDay = tempBest_transactions[z][2];
+                            profit2 += A[stock][sellDay] - A[stock][buyDay];
+                        }
+                    } else if(memo[l][k - 2].first > 0){ // If we already calculated the recursive call
+                        profit2 = memo[l][k - 2].first;
+                        tempBest_transactions = memo[l][k - 2].second;
+                    }
+                } else if (memo[j][k - 1].first < profit1) { // If k = 1, do not call recursively
+                    memo[j][k - 1].first = profit1;
+                    memo[j][k - 1].second = {{i,j,l}};
+                }
+
+                int total_profit = profit1 + profit2; // Add up total profit from recursive call and current call
+                if (total_profit > max_profit) {
+                    max_profit = total_profit;
+                    best_transactions.clear(); // Clears the best transactions 2d array because we found new better transactions
+                    best_transactions.push_back({i,j,l}); // Adding the transaction from this call to the beginning of the best_transactions list;
+
+                    for(int z = 0; z<tempBest_transactions.size(); z++){
+                        best_transactions.push_back(tempBest_transactions[z]);  // Adding the transactions from the recursive call to the best list
+                    }
+
+                    // Adding Best Transactions to Memo
+                    memo[j][k-1].first = max_profit;
+                    memo[j][k-1].second.clear();
+                    memo[j][k-1].second = best_transactions;
+                }
+            }
+        }
+    }
+    return best_transactions;
+}
 
 void Plot1() {
 
@@ -545,8 +782,8 @@ void Plot3() {
 
     vector<int> days = {10, 20, 30, 40, 50};
 
-    //PLOT 3: variable days (n) and fixed companies and transactions(m = 50, k = 5)
-    int k = 5;
+    //PLOT 3: variable days (n) and fixed companies and transactions(m = 50, k = 3)
+    int k = 3;
     vector<vector<int>> Plot1 (days.size(), vector<int>(3));
     for (int i = 0; i < days.size(); i++ ){
         int numDays = days[i];
@@ -558,26 +795,27 @@ void Plot3() {
         }
 
         //Task 4
-        auto startTask4 = high_resolution_clock::now();
-        task4(A,k,0);
-        auto stopTask4 = high_resolution_clock::now();
-        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
-        Plot1[i][0] = durationTask4.count();
+//        auto startTask4 = high_resolution_clock::now();
+//        task4(A,k,0);
+//        auto stopTask4 = high_resolution_clock::now();
+//        auto durationTask4 = duration_cast<seconds>(stopTask4 - startTask4);
+//        Plot1[i][0] = durationTask4.count();
+
 
         //Task 5
-//        auto startTask5 = high_resolution_clock::now();
-//        task5(A,k);
-//        auto stopTask5 = high_resolution_clock::now();
-//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
-//        Plot1[i][1] = durationTask5.count();
+        auto startTask5 = high_resolution_clock::now();
+        task5(A,k,0);
+        auto stopTask5 = high_resolution_clock::now();
+        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+        Plot1[i][1] = durationTask5.count();
 
 
         //Task 6
-//        auto startTask6 = high_resolution_clock::now();
-//        task6(A,k);
-//        auto stopTask6 = high_resolution_clock::now();
-//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
-//        Plot1[i][2] = durationTask6.count();
+        auto startTask6 = high_resolution_clock::now();
+        task6(A,k);
+        auto stopTask6 = high_resolution_clock::now();
+        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+        Plot1[i][2] = durationTask6.count();
 
     }
 
@@ -587,7 +825,7 @@ void Plot3() {
         }
         cout << endl;
     }
-
+    cout << endl;
 }
 
 
@@ -595,8 +833,8 @@ void Plot4() {
 
     vector<int> companies = {10, 20, 30, 40, 50};
 
-    //PLOT 1: variable companies(m) and fixed days and transactions(n = 50, k = 5)
-    int k = 5;
+    //PLOT 1: variable companies(m) and fixed days and transactions(n = 50, k = 3)
+    int k = 3;
     vector<vector<int>> Plot1 (companies.size(), vector<int>(3));
     for (int i = 0; i < companies.size(); i++ ){
         int numCompanies = companies[i];
@@ -615,11 +853,11 @@ void Plot4() {
 //        Plot1[i][0] = durationTask4.count();
 
         //Task 5
-//        auto startTask5 = high_resolution_clock::now();
-//        task5(A,k);
-//        auto stopTask5 = high_resolution_clock::now();
-//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
-//        Plot1[i][1] = durationTask5.count();
+        auto startTask5 = high_resolution_clock::now();
+        task5(A,k,0);
+        auto stopTask5 = high_resolution_clock::now();
+        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+        Plot1[i][1] = durationTask5.count();
 
 
         //Task 6
@@ -637,12 +875,13 @@ void Plot4() {
         }
         cout << endl;
     }
+    cout << endl;
 
 }
 
 void Plot5() {
 
-    vector<int> ks = {5,10,15,20,25};
+    vector<int> ks = {1,2,3};
 
     //PLOT 1: variable companies(m) and fixed days and companies(n = 50, m = 50)
     vector<vector<int>> Plot1 (ks.size(), vector<int>(3));
@@ -650,8 +889,8 @@ void Plot5() {
         int k = ks[i];
         vector<vector<int>> A(50, vector<int>(50));
         for (int j = 0; j < A.size(); j++) {
-            for (int k = 0; k < A[0].size(); k++) {
-                A[j][k] = rand() % 10000;
+            for (int l = 0; l < A[0].size(); l++) {
+                A[j][l] = rand() % 10000;
             }
         }
 
@@ -663,11 +902,11 @@ void Plot5() {
 //        Plot1[i][0] = durationTask4.count();
 
         //Task 5
-//        auto startTask5 = high_resolution_clock::now();
-//        task5(A,k);
-//        auto stopTask5 = high_resolution_clock::now();
-//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
-//        Plot1[i][1] = durationTask5.count();
+        auto startTask5 = high_resolution_clock::now();
+        task5(A,k,0);
+        auto stopTask5 = high_resolution_clock::now();
+        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+        Plot1[i][1] = durationTask5.count();
 
 
         //Task 6
@@ -680,11 +919,12 @@ void Plot5() {
     }
 
     for (int j = 0; j < Plot1.size(); j++) {
-        for (int k = 0; k <Plot1[0].size(); k++) {
-            cout << Plot1[j][k] << " ";
+        for (int l = 0; l <Plot1[0].size(); l++) {
+            cout << Plot1[j][l] << " ";
         }
         cout << endl;
     }
+    cout << endl;
 
 }
 
