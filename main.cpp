@@ -8,12 +8,12 @@ using namespace std::chrono;
 
 
 //task 1 functions
-vector<int> task1(vector<vector<int>>& A);
+vector<int> task1(vector<vector<int> >& A);
 //task 2 functions
-vector<int> task2(vector<vector<int>>& A);
+vector<int> task2(vector<vector<int> >& A);
 //task 3A functions
-int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta);
-int findMax( vector<int>& A,  vector<pair <int, int>>& B, int i,int &delta, int &buy, int &sell);
+int findMin( vector<int>& A, vector<pair <int, int> >& B, int i, int &delta);
+int findMax( vector<int>& A,  vector<pair <int, int> >& B, int i,int &delta, int &buy, int &sell);
 vector<int> task3A(vector<vector<int> >& A);
 //task3B functions
 vector<int> task3B(vector<vector<int> >& A);
@@ -23,14 +23,14 @@ void Plot2();
 
 
 //task 4 functions
-vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol);
+vector<vector<int> > task4(vector<vector<int> >& A, int k, int startCol);
 //task 5 functions
-vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vector<vector<pair<int, vector<vector<int>>>>>& memo);
-vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol);
+vector<vector<int> > task5helper(vector<vector<int> >& A, int k, int startCol, vector<vector<pair<int, vector<vector<int> > > > >& memo);
+vector<vector<int> > task5(vector<vector<int> >& A, int k, int startCol);
 //task 6 functions
-vector<vector<int>> findIndices( vector<vector<vector<pair<int,int>>>>& T, vector<vector<int>>& A,vector<vector<int>>& transactions, int k, int startDay, int lastDay, int lastCompany);
-int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vector<pair<int,int>>>>& recorded,  int day, int k);
-vector<vector<int>> task6(vector<vector<int> >& A, int k);
+vector<vector<int> > findIndices( vector<vector<vector<pair<int,int> > > >& T, vector<vector<int> >& A,vector<vector<int> >& transactions, int k, int startDay, int lastDay, int lastCompany);
+int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vector<pair<int,int> > > >& recorded,  int day, int k);
+vector<vector<int> > task6(vector<vector<int> >& A, int k);
 //time complexity analysis for tasks 4-6
 void Plot3();
 void Plot4();
@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
     string arg = argv[1];
 
 
-    vector<vector<int>> result;
+    vector<vector<int> > result;
     int m, n, k;
 
     if(arg == "1"){
@@ -152,15 +152,15 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol) {
+vector<vector<int> > task5(vector<vector<int> >& A, int k, int startCol) {
     int m = A.size();
     int n = A[0].size();
     int max_profit = 0;
     // Setting a 3d vector of pairs, where the first value is the max profit that can be achieved by buying a certain stock on a certain day with a certain amount of transactions left.
     // The second part of the pair is a 2d array with the transactions that make that maximum profit.
-    vector<vector<pair<int, vector<vector<int>>>>> memo(n, vector<pair<int, vector<vector<int>>>>(k, make_pair(INT_MIN, vector<vector<int>>())));
-    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
-    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+    vector<vector<pair<int, vector<vector<int> > > > > memo(n, vector<pair<int, vector<vector<int> > > >(k, make_pair(INT_MIN, vector<vector<int> >())));
+    vector<vector<int> > best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int> > tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
 
     for (int i = 0; i < m; i++) { // Stock loop for transactions
         for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
@@ -207,12 +207,12 @@ vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol) {
 }
 
 
-vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vector<vector<pair<int, vector<vector<int>>>>>& memo) {
+vector<vector<int> > task5helper(vector<vector<int> >& A, int k, int startCol, vector<vector<pair<int, vector<vector<int> > > > >& memo) {
     int m = A.size();
     int n = A[0].size();
     int max_profit = 0;
-    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
-    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+    vector<vector<int> > best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int> > tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
 
     for (int i = 0; i < m; i++) { // Stock loop for transactions
         for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
@@ -260,9 +260,9 @@ vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vec
 
 
 
-vector<vector<int>> findIndices( vector<vector<vector<pair<int,int>>>>& T, vector<vector<int>>& A,vector<vector<int>>& transactions, int k, int startDay, int lastDay, int lastCompany){
+vector<vector<int> > findIndices( vector<vector<vector<pair<int,int> > > >& T, vector<vector<int> >& A,vector<vector<int> >& transactions, int k, int startDay, int lastDay, int lastCompany){
 
-    vector<pair<int, int>> maxesK;
+    vector<pair<int, int> > maxesK;
     int currMax = INT_MIN;
     int max = INT_MIN;
     int sellDay = -1;
@@ -298,7 +298,7 @@ vector<vector<int>> findIndices( vector<vector<vector<pair<int,int>>>>& T, vecto
     }
     return transactions;
 }
-int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vector<pair<int,int>>>>& recorded,  int day, int k){
+int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vector<pair<int,int> > > >& recorded,  int day, int k){
     // if day 0 is reached, or we've run out of transactions and are not currently holding stock.
     if (day == 0 || (k == 0 && holding.first == -1)){
         // if we are holding stock, it must be day 0 for us to be in this method, so sell whatever you have
@@ -344,12 +344,12 @@ int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vect
     }
 }
 
-vector<vector<int>> task6(vector<vector<int>>& A, int k){
+vector<vector<int> > task6(vector<vector<int> >& A, int k){
     //create memoization table and call recursive function
-    vector<vector<vector<pair<int,int>>>>recorded(A.size() , vector<vector<pair<int,int>>>(A[0].size(), vector<pair<int,int>>(k, {-1,-1})));
+    vector<vector<vector<pair<int,int> > > >recorded(A.size() , vector<vector<pair<int,int> > >(A[0].size(), vector<pair<int,int> >(k, {-1,-1})));
     pair<int, int> holding = {-1, -1};
     findBest(A, holding, recorded,A[0].size() - 1, k);
-    vector<vector<int>> transactions;
+    vector<vector<int> > transactions;
     return findIndices(recorded,A,transactions, k,A[0].size()-1,-1,-1);
 }
 
@@ -363,7 +363,7 @@ vector<vector<int>> task6(vector<vector<int>>& A, int k){
  * company with a purchase of stock at day x and a sale of said stock at day y, where 0 <= x < y <= n. After finding the
  * maximum profit for a transaction pertaining to a given company's stock, the profit is compared to maximum profit
  * found for all other companies considered beforehand and updated if necessary. The algorithm has a complexity of O(m*n^2)*/
-vector<int> task1(vector<vector<int>>& A) {
+vector<int> task1(vector<vector<int> >& A) {
     int m = A.size();
     int n = A[0].size();
     /*initialize initial maximum profit to the lowest possible stock price minus the maximum possible stock price
@@ -399,7 +399,7 @@ vector<int> task1(vector<vector<int>>& A) {
  * while parsing the stock prices for a given company. For each company, a profit is then only considered once for every day
  * by only comparing its value to the value of the minimum stock price before it. This exploit allows for a complexity of O(m*n). */
 
-vector<int> task2(vector<vector<int>>& A) {
+vector<int> task2(vector<vector<int> >& A) {
     int m = A.size();
     int n = A[0].size();
     int maxProfit = INT_MIN;
@@ -436,7 +436,7 @@ vector<int> task2(vector<vector<int>>& A) {
  * as the 2 dimensional array passed into task 3A holding stock prices over a series of days and holds, in each entry [i][j],
  * a pair of the form (minimum stock price prior to j for company i, distance to minimum prior stock price).
  * */
-int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta) {
+int findMin( vector<int>& A, vector<pair <int, int> >& B, int i, int &delta) {
     // if an entry in B holding the sought after minimum is yet to be filled out.
     if (B[i].first == -1){
         // if we are considering the first index, no prior minimum exists so B values are invalid.
@@ -479,7 +479,7 @@ int findMin( vector<int>& A, vector<pair <int, int>>& B, int i, int &delta) {
  * transactions that maximize profit as well as a parameter i specifying the day being considered. The remainder of
  * parameters only serve to call the findMin function. findMax ultimately compares the profit of selling at i to the profit
  * at selling at day i - 1. It does so using the findMin function. The sell and buy date are updated as new max profits are found. */
-int findMax( vector<int>& A,  vector<pair <int, int>>& B, int i,int &delta, int &buy, int &sell) {
+int findMax( vector<int>& A,  vector<pair <int, int> >& B, int i,int &delta, int &buy, int &sell) {
     //selling at day 0 is invalid so a minimum value is given such that its never chosen in a max comparison.
     if (i == 0){
         return INT_MIN;
@@ -525,7 +525,7 @@ vector<int> task3A(vector<vector<int> >& A) {
     int delta = 0;
     for (int i = 0; i < m; i++){
         delta = 0;
-        vector<pair <int, int>>Empty (A[0].size(), {-1,0});
+        vector<pair <int, int> >Empty (A[0].size(), {-1,0});
         // find the maximum profit for a given company
         int profit = findMax(A[i], Empty, A[0].size() - 1, delta, buy, sell);
         // if profit is greater than for other companies considered update the values off best transaction.
@@ -606,12 +606,12 @@ vector<int> task3B(vector<vector<int> >& A) {
 
 
 
-vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol) {
+vector<vector<int> > task4(vector<vector<int> >& A, int k, int startCol) {
     int m = A.size();
     int n = A[0].size();
     int max_profit = 0;
-    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
-    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+    vector<vector<int> > best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int> > tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
 
     for (int i = 0; i < m; i++) { // Stock loop for transactions
         for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
@@ -647,10 +647,10 @@ void Plot1() {
     vector<int> days = {1000, 2000, 3000, 4000, 5000};
 
     //PLOT 1: variable days (n) and fixed companies(m = 1000)
-    vector<vector<int>> Plot1 (days.size(), vector<int>(4));
+    vector<vector<int> > Plot1 (days.size(), vector<int>(4));
     for (int i = 0; i < days.size(); i++ ){
         int numDays = days[i];
-        vector<vector<int>> A(1000, vector<int>(numDays));
+        vector<vector<int> > A(1000, vector<int>(numDays));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -701,10 +701,10 @@ void Plot2() {
     vector<int> companies = {1000, 2000, 3000, 4000, 5000};
 
     //PLOT 2: fixed days (n = 1000) and variable companies
-    vector<vector<int>> Plot2 (companies.size(), vector<int>(4));
+    vector<vector<int> > Plot2 (companies.size(), vector<int>(4));
     for (int i = 0; i < companies.size(); i++ ){
         int numCompanies = companies[i];
-        vector<vector<int>> A(numCompanies, vector<int>(1000));
+        vector<vector<int> > A(numCompanies, vector<int>(1000));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -756,10 +756,10 @@ void Plot3() {
 
     //PLOT 3: variable days (n) and fixed companies and transactions(m = 50, k = 5)
     int k = 5;
-    vector<vector<int>> Plot1 (days.size(), vector<int>(3));
+    vector<vector<int> > Plot1 (days.size(), vector<int>(3));
     for (int i = 0; i < days.size(); i++ ){
         int numDays = days[i];
-        vector<vector<int>> A(50, vector<int>(numDays));
+        vector<vector<int> > A(50, vector<int>(numDays));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -806,10 +806,10 @@ void Plot4() {
 
     //PLOT 1: variable companies(m) and fixed days and transactions(n = 50, k = 5)
     int k = 5;
-    vector<vector<int>> Plot1 (companies.size(), vector<int>(3));
+    vector<vector<int> > Plot1 (companies.size(), vector<int>(3));
     for (int i = 0; i < companies.size(); i++ ){
         int numCompanies = companies[i];
-        vector<vector<int>> A(numCompanies, vector<int>(50));
+        vector<vector<int> > A(numCompanies, vector<int>(50));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -854,10 +854,10 @@ void Plot5() {
     vector<int> ks = {5,10,15,20,25};
 
     //PLOT 1: variable companies(m) and fixed days and companies(n = 50, m = 50)
-    vector<vector<int>> Plot1 (ks.size(), vector<int>(3));
+    vector<vector<int> > Plot1 (ks.size(), vector<int>(3));
     for (int i = 0; i < ks.size(); i++ ){
         int k = ks[i];
-        vector<vector<int>> A(50, vector<int>(50));
+        vector<vector<int> > A(50, vector<int>(50));
         for (int j = 0; j < A.size(); j++) {
             for (int k = 0; k < A[0].size(); k++) {
                 A[j][k] = rand() % 10000;
@@ -898,7 +898,7 @@ void Plot5() {
 }
 
 void testProblem2(int days, int companies, int k, int numTests){
-    vector<vector<int>> A(companies, vector<int>(days));
+    vector<vector<int> > A(companies, vector<int>(days));
     int passed = 0;
     for (int i = 0; i < numTests; i++) {
         for (int j = 0; j < companies; j++) {
@@ -906,8 +906,8 @@ void testProblem2(int days, int companies, int k, int numTests){
                 A[j][k] = rand() % 10;
             }
         }
-        vector<vector<int>> task4bResult = task4(A, k, 0);
-        vector<vector<int>> task6Result = task6(A, k);
+        vector<vector<int> > task4bResult = task4(A, k, 0);
+        vector<vector<int> > task6Result = task6(A, k);
 
         int profit4 = 0;
         for (int l = 0; l < task4bResult.size(); l++) {
@@ -927,7 +927,7 @@ void testProblem2(int days, int companies, int k, int numTests){
 
 
         if(profit4 != profit6){
-            vector<vector<vector<int>>> trans = {task4bResult, task6Result};
+            vector<vector<vector<int> > > trans = {task4bResult, task6Result};
             cout << "UNEQUAL PROFITS REPORTED: " << endl << endl;
             cout << "Task 4 Profit: " << profit4 << endl;
             cout << "Task 6 Profit: " << profit6 << endl;
@@ -950,7 +950,7 @@ void testProblem2(int days, int companies, int k, int numTests){
 
 
 void testProblem1(int days, int companies, int numTests){
-    vector<vector<int>> A(companies, vector<int>(days));
+    vector<vector<int> > A(companies, vector<int>(days));
     int passed = 0;
     for (int i = 0; i < numTests; i++) {
         for (int j = 0; j < companies; j++) {
