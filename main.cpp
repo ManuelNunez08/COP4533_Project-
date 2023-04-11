@@ -41,8 +41,112 @@ void testProblem2(int days, int companies, int k,int numTests);
 void testProblem1(int days, int companies, int numTests);
 
 
-int main(int argc, char** argv){
+int main(int argc, char* argv[]) {
 
+    // Input will be something like "3b"
+    // We have to extract it
+    string arg = argv[1];
+
+
+    vector<vector<int>> result;
+    int m, n, k;
+
+    if(arg == "1"){
+        // Reading input and constructing matrix
+        cin >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+
+        // Computing result
+        result.push_back(task1(A));
+
+    }else if(arg == "2"){
+        // Reading input and constructing matrix
+        cin >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+
+        // Computing result
+        result.push_back(task2(A));
+
+    }else if(arg == "3a"){
+        // Reading input and constructing matrix
+        cin >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+
+        // Computing result
+        result.push_back(task3A(A));
+
+    }else if(arg == "3b"){
+        // Reading input and constructing matrix
+        cin >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+
+        // Computing result
+        result.push_back(task3B(A));
+
+    }else if(arg == "4"){
+        // Reading input and constructing matrix
+        cin >> k >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+
+        // Computing result
+        result = task4(A, k, 0);
+
+    } else if(arg == "5"){
+        // Reading input and constructing matrix
+        cin >> k >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+        // Computing result
+        result = task5(A, k, 0);
+
+    } else if(arg == "6"){
+        // Reading input and constructing matrix
+        cin >> k >> m >> n;
+        vector<vector<int>> A(m, vector<int>(n));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                cin >> A[i][j];
+            }
+        }
+        // Computing result
+        result = task6(A, k);
+
+    }
+    for (int l = 0; l < result.size(); l++) {
+        int stock = result[l][0] + 1;  // Adding 1 because they start at index 1
+        int buyDay = result[l][1] + 1;
+        int sellDay = result[l][2] + 1;
+        cout << stock << " " << buyDay << " " << sellDay << endl;
+    }
 
     return 0;
 }
