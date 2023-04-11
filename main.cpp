@@ -662,11 +662,11 @@ void Plot3() {
         }
 
         //Task 4
-//        auto startTask4 = high_resolution_clock::now();
-//        task4(A,k,0);
-//        auto stopTask4 = high_resolution_clock::now();
-//        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
-//        Plot1[i][0] = durationTask4.count();
+        auto startTask4 = high_resolution_clock::now();
+        task4(A,k,0);
+        auto stopTask4 = high_resolution_clock::now();
+        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+        Plot1[i][0] = durationTask4.count();
 
         //Task 5
         auto startTask5 = high_resolution_clock::now();
@@ -677,11 +677,11 @@ void Plot3() {
 
 
         //Task 6
-//        auto startTask6 = high_resolution_clock::now();
-//        task6(A,k);
-//        auto stopTask6 = high_resolution_clock::now();
-//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
-//        Plot1[i][2] = durationTask6.count();
+        auto startTask6 = high_resolution_clock::now();
+        task6(A,k);
+        auto stopTask6 = high_resolution_clock::now();
+        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+        Plot1[i][2] = durationTask6.count();
 
     }
 
@@ -712,11 +712,11 @@ void Plot4() {
         }
 
         //Task 4
-//        auto startTask4 = high_resolution_clock::now();
-//        task4(A,k,0);
-//        auto stopTask4 = high_resolution_clock::now();
-//        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
-//        Plot1[i][0] = durationTask4.count();
+        auto startTask4 = high_resolution_clock::now();
+        task4(A,k,0);
+        auto stopTask4 = high_resolution_clock::now();
+        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+        Plot1[i][0] = durationTask4.count();
 
         //Task 5
         auto startTask5 = high_resolution_clock::now();
@@ -727,11 +727,11 @@ void Plot4() {
 
 
         //Task 6
-//        auto startTask6 = high_resolution_clock::now();
-//        task6(A,k);
-//        auto stopTask6 = high_resolution_clock::now();
-//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
-//        Plot1[i][2] = durationTask6.count();
+        auto startTask6 = high_resolution_clock::now();
+        task6(A,k);
+        auto stopTask6 = high_resolution_clock::now();
+        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+        Plot1[i][2] = durationTask6.count();
 
     }
 
@@ -759,12 +759,12 @@ void Plot5() {
             }
         }
 
-//        //Task 4
-//        auto startTask4 = high_resolution_clock::now();
-//        task4(A,k,0);
-//        auto stopTask4 = high_resolution_clock::now();
-//        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
-//        Plot1[i][0] = durationTask4.count();
+        //Task 4
+        auto startTask4 = high_resolution_clock::now();
+        task4(A,k,0);
+        auto stopTask4 = high_resolution_clock::now();
+        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+        Plot1[i][0] = durationTask4.count();
 
         //Task 5
         auto startTask5 = high_resolution_clock::now();
@@ -775,11 +775,11 @@ void Plot5() {
 
 
         //Task 6
-//        auto startTask6 = high_resolution_clock::now();
-//        task6(A,k);
-//        auto stopTask6 = high_resolution_clock::now();
-//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
-//        Plot1[i][2] = durationTask6.count();
+        auto startTask6 = high_resolution_clock::now();
+        task6(A,k);
+        auto stopTask6 = high_resolution_clock::now();
+        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+        Plot1[i][2] = durationTask6.count();
 
     }
 
