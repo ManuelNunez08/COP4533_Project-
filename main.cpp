@@ -139,6 +139,7 @@ int main(int argc, char* argv[]) {
         }
         // Computing result
         result = task6(A, k);
+        reverse(result.begin(), result.end());
 
     }
     for (int l = 0; l < result.size(); l++) {
