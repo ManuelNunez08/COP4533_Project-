@@ -20,33 +20,137 @@ vector<int> task3B(vector<vector<int> >& A);
 // time complexity analysis of tasks 1-3 functions
 void Plot1();
 void Plot2();
-//testing functions task 1 -3
 
 
 //task 4 functions
 vector<vector<int>> task4(vector<vector<int>>& A, int k, int startCol);
-
-
+//task 5 functions
+vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vector<vector<pair<int, vector<vector<int>>>>>& memo);
+vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol);
 //task 6 functions
 vector<vector<int>> findIndices( vector<vector<vector<pair<int,int>>>>& T, vector<vector<int>>& A,vector<vector<int>>& transactions, int k, int startDay, int lastDay, int lastCompany);
 int findBest(vector<vector<int> >& A, pair<int,int>& holding, vector<vector<vector<pair<int,int>>>>& recorded,  int day, int k);
 vector<vector<int>> task6(vector<vector<int> >& A, int k);
-
 //time complexity analysis for tasks 4-6
 void Plot3();
 void Plot4();
 void Plot5();
 
-//helper/testing functions
+//testing functions
 void testProblem2(int days, int companies, int k,int numTests);
 void testProblem1(int days, int companies, int numTests);
 
 
-int main() {
-//    testProblem1(10,10,25);
-//    testProblem2(10,10,4,25);
-    Plot3();
+int main(int argc, char** argv){
+
+
     return 0;
+}
+
+vector<vector<int>> task5(vector<vector<int>>& A, int k, int startCol) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    // Setting a 3d vector of pairs, where the first value is the max profit that can be achieved by buying a certain stock on a certain day with a certain amount of transactions left.
+    // The second part of the pair is a 2d array with the transactions that make that maximum profit.
+    vector<vector<pair<int, vector<vector<int>>>>> memo(n, vector<pair<int, vector<vector<int>>>>(k, make_pair(INT_MIN, vector<vector<int>>())));
+    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+
+    for (int i = 0; i < m; i++) { // Stock loop for transactions
+        for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
+            for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
+                int profit1 = A[i][l] - A[i][j]; // Transaction 1: Stock: i BuyDay: j SellDay: l
+                int profit2 = 0;
+                if(k > 1) { // If k > 1 we will try to call recursively or obtain already calculated recursive call through memo
+                    if (memo[l][k - 2].first == INT_MIN) { // If we have not calculated this recursive call
+                        tempBest_transactions = task5helper(A, k - 1, l, memo); // Call recursively
+                        for (int z = 0; z < tempBest_transactions.size(); z++) { // Looping through best transactions from recursive call to add their profits
+                            int stock = tempBest_transactions[z][0];
+                            int buyDay = tempBest_transactions[z][1];
+                            int sellDay = tempBest_transactions[z][2];
+                            profit2 += A[stock][sellDay] - A[stock][buyDay];
+                        }
+                    } else if(memo[l][k - 2].first > 0){ // If we already calculated the recursive call
+                        profit2 = memo[l][k - 2].first;
+                        tempBest_transactions = memo[l][k - 2].second;
+                    }
+                } else if (memo[j][k - 1].first < profit1) { // If k = 1, do not call recursively
+                    memo[j][k - 1].first = profit1;
+                    memo[j][k - 1].second = {{i,j,l}};
+                }
+
+                int total_profit = profit1 + profit2; // Add up total profit from recursive call and current call
+                if (total_profit > max_profit) {
+                    max_profit = total_profit;
+                    best_transactions.clear(); // Clears the best transactions 2d array because we found new better transactions
+                    best_transactions.push_back({i,j,l}); // Adding the transaction from this call to the beginning of the best_transactions list;
+
+                    for(int z = 0; z<tempBest_transactions.size(); z++){
+                        best_transactions.push_back(tempBest_transactions[z]);  // Adding the transactions from the recursive call to the best list
+                    }
+
+                    // Adding Best Transactions to Memo
+                    memo[j][k-1].first = max_profit;
+                    memo[j][k-1].second.clear();
+                    memo[j][k-1].second = best_transactions;
+                }
+            }
+        }
+    }
+    return best_transactions;
+}
+
+
+vector<vector<int>> task5helper(vector<vector<int>>& A, int k, int startCol, vector<vector<pair<int, vector<vector<int>>>>>& memo) {
+    int m = A.size();
+    int n = A[0].size();
+    int max_profit = 0;
+    vector<vector<int>> best_transactions; // best_transactions 2d array with k transactions.
+    vector<vector<int>> tempBest_transactions; // temporary best_transactions 2d array that will hold the transactions returned by the recursive calls
+
+    for (int i = 0; i < m; i++) { // Stock loop for transactions
+        for (int j = startCol; j < n-1; j++) { // Buyday loop for transactions
+            for (int l = j + 1; l < n; l++) { // SellDay loop for transactions
+                int profit1 = A[i][l] - A[i][j]; // Transaction 1: Stock: i BuyDay: j SellDay: l
+                int profit2 = 0;
+                if(k > 1) { // If k > 1 we will try to call recursively or obtain already calculated recursive call through memo
+                    if (memo[l][k - 2].first == INT_MIN) { // If we have not calculated this recursive call
+                        tempBest_transactions = task5helper(A, k - 1, l, memo); // Call recursively
+                        for (int z = 0; z < tempBest_transactions.size(); z++) { // Looping through best transactions from recursive call to add their profits
+                            int stock = tempBest_transactions[z][0];
+                            int buyDay = tempBest_transactions[z][1];
+                            int sellDay = tempBest_transactions[z][2];
+                            profit2 += A[stock][sellDay] - A[stock][buyDay];
+                        }
+                    } else if(memo[l][k - 2].first > 0){ // If we already calculated the recursive call
+                        profit2 = memo[l][k - 2].first;
+                        tempBest_transactions = memo[l][k - 2].second;
+                    }
+                } else if (memo[j][k - 1].first < profit1) { // If k = 1, do not call recursively
+                    memo[j][k - 1].first = profit1;
+                    memo[j][k - 1].second = {{i,j,l}};
+                }
+
+                int total_profit = profit1 + profit2; // Add up total profit from recursive call and current call
+                if (total_profit > max_profit) {
+                    max_profit = total_profit;
+                    best_transactions.clear(); // Clears the best transactions 2d array because we found new better transactions
+                    best_transactions.push_back({i,j,l}); // Adding the transaction from this call to the beginning of the best_transactions list;
+
+                    for(int z = 0; z<tempBest_transactions.size(); z++){
+                        best_transactions.push_back(tempBest_transactions[z]);  // Adding the transactions from the recursive call to the best list
+                    }
+
+                    // Adding Best Transactions to Memo
+                    memo[j][k-1].first = max_profit;
+                    memo[j][k-1].second.clear();
+                    memo[j][k-1].second = best_transactions;
+                }
+            }
+        }
+    }
+    return best_transactions;
 }
 
 
@@ -558,18 +662,18 @@ void Plot3() {
         }
 
         //Task 4
-        auto startTask4 = high_resolution_clock::now();
-        task4(A,k,0);
-        auto stopTask4 = high_resolution_clock::now();
-        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
-        Plot1[i][0] = durationTask4.count();
+//        auto startTask4 = high_resolution_clock::now();
+//        task4(A,k,0);
+//        auto stopTask4 = high_resolution_clock::now();
+//        auto durationTask4 = duration_cast<microseconds>(stopTask4 - startTask4);
+//        Plot1[i][0] = durationTask4.count();
 
         //Task 5
-//        auto startTask5 = high_resolution_clock::now();
-//        task5(A,k);
-//        auto stopTask5 = high_resolution_clock::now();
-//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
-//        Plot1[i][1] = durationTask5.count();
+        auto startTask5 = high_resolution_clock::now();
+        task5(A,k,0);
+        auto stopTask5 = high_resolution_clock::now();
+        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+        Plot1[i][1] = durationTask5.count();
 
 
         //Task 6
@@ -615,19 +719,19 @@ void Plot4() {
 //        Plot1[i][0] = durationTask4.count();
 
         //Task 5
-//        auto startTask5 = high_resolution_clock::now();
-//        task5(A,k);
-//        auto stopTask5 = high_resolution_clock::now();
-//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
-//        Plot1[i][1] = durationTask5.count();
+        auto startTask5 = high_resolution_clock::now();
+        task5(A,k,0);
+        auto stopTask5 = high_resolution_clock::now();
+        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+        Plot1[i][1] = durationTask5.count();
 
 
         //Task 6
-        auto startTask6 = high_resolution_clock::now();
-        task6(A,k);
-        auto stopTask6 = high_resolution_clock::now();
-        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
-        Plot1[i][2] = durationTask6.count();
+//        auto startTask6 = high_resolution_clock::now();
+//        task6(A,k);
+//        auto stopTask6 = high_resolution_clock::now();
+//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+//        Plot1[i][2] = durationTask6.count();
 
     }
 
@@ -663,19 +767,19 @@ void Plot5() {
 //        Plot1[i][0] = durationTask4.count();
 
         //Task 5
-//        auto startTask5 = high_resolution_clock::now();
-//        task5(A,k);
-//        auto stopTask5 = high_resolution_clock::now();
-//        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
-//        Plot1[i][1] = durationTask5.count();
+        auto startTask5 = high_resolution_clock::now();
+        task5(A,k,0);
+        auto stopTask5 = high_resolution_clock::now();
+        auto durationTask5 = duration_cast<microseconds>(stopTask5 - startTask5);
+        Plot1[i][1] = durationTask5.count();
 
 
         //Task 6
-        auto startTask6 = high_resolution_clock::now();
-        task6(A,k);
-        auto stopTask6 = high_resolution_clock::now();
-        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
-        Plot1[i][2] = durationTask6.count();
+//        auto startTask6 = high_resolution_clock::now();
+//        task6(A,k);
+//        auto stopTask6 = high_resolution_clock::now();
+//        auto durationTask6 = duration_cast<microseconds>(stopTask6 - startTask6);
+//        Plot1[i][2] = durationTask6.count();
 
     }
 
